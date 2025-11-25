@@ -1,0 +1,11 @@
+VBox {
+    -fx-font-size: 2em;
+}
+
+.table-view .column-header-background, .table-row-cell {
+    -fx-font-size: 1.5em;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
