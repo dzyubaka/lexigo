@@ -14,7 +14,6 @@ import ru.dzyubaka.lexigo.Main;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Optional;
 
 public class EditController {
     @FXML
@@ -51,7 +50,8 @@ public class EditController {
 
     @FXML
     private void save(ActionEvent event) {
-        Optional.ofNullable(Main.fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow())).ifPresent(file -> {
+        var file = Main.fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+        if (file != null) {
             var items = tableView.getItems();
             try (var bufferedWriter = Files.newBufferedWriter(file.toPath())) {
                 for (var item : items) {
@@ -62,6 +62,6 @@ public class EditController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }
     }
 }
