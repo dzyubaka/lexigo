@@ -12,7 +12,6 @@ import ru.dzyubaka.lexigo.Main;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MenuController {
@@ -24,7 +23,8 @@ public class MenuController {
     @FXML
     private void edit(ActionEvent event) {
         var scene = ((Node) event.getSource()).getScene();
-        Optional.ofNullable(Main.fileChooser.showOpenDialog(scene.getWindow())).ifPresent(file -> {
+        var file = Main.fileChooser.showOpenDialog(scene.getWindow());
+        if (file != null) {
             try (var bufferedReader = Files.newBufferedReader(file.toPath())) {
                 var loader = new FXMLLoader(MenuController.class.getResource("/ru/dzyubaka/lexigo/view/edit.fxml"));
                 var root = loader.<Parent>load();
@@ -37,13 +37,14 @@ public class MenuController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }
     }
 
     @FXML
     private void take(ActionEvent event) {
         var scene = ((Node) event.getSource()).getScene();
-        Optional.ofNullable(Main.fileChooser.showOpenDialog(scene.getWindow())).ifPresent(file -> {
+        var file = Main.fileChooser.showOpenDialog(scene.getWindow());
+        if (file != null) {
             try (var bufferedReader = Files.newBufferedReader(file.toPath())) {
                 var items = bufferedReader.readAllLines().stream().map(line -> {
                     var commaIndex = line.indexOf(',');
@@ -57,6 +58,6 @@ public class MenuController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }
     }
 }
