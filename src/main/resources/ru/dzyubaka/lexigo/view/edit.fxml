@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.EditController">
+    <center>
+        <TableView fx:id="tableView" editable="true"/>
+    </center>
+    <top>
+        <ToolBar>
+            <Button text="Back" onAction="#back"/>
+            <Button text="Add" onAction="#add"/>
+            <Button text="Save" onAction="#save"/>
+        </ToolBar>
+    </top>
+</BorderPane>

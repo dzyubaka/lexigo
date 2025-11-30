@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.MenuController" alignment="CENTER">
+    <Region VBox.vgrow="ALWAYS"/>
+    <Button VBox.vgrow="ALWAYS" text="Create" onAction="#create"/>
+    <Region VBox.vgrow="ALWAYS"/>
+    <Button VBox.vgrow="ALWAYS" text="Edit" onAction="#edit"/>
+    <Region VBox.vgrow="ALWAYS"/>
+    <Button VBox.vgrow="ALWAYS" text="Take" onAction="#take"/>
+    <Region VBox.vgrow="ALWAYS"/>
+</VBox>

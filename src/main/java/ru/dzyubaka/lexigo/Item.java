@@ -7,10 +7,6 @@ public class Item {
     private StringProperty original;
     private StringProperty translation;
 
-    public Item() {
-
-    }
-
     public Item(String original, String translation) {
         setOriginal(original);
         setTranslation(translation);
