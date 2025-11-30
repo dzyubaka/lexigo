@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import ru.dzyubaka.lexigo.Item;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class PassController {
     @FXML
@@ -21,10 +20,11 @@ public class PassController {
     @FXML
     private TextField textField;
 
-    private ObservableList<Item> items;
-    private final AtomicInteger currentIndex = new AtomicInteger();
-    private final AtomicInteger correctAnswers = new AtomicInteger();
     private final Alert correctAlert = new Alert(Alert.AlertType.INFORMATION);
+    private ObservableList<Item> items;
+
+    private int currentIndex = 0;
+    private int correctAnswers = 0;
 
     {
         correctAlert.setHeaderText("Correct!");
@@ -38,21 +38,21 @@ public class PassController {
 
     @FXML
     private void next(ActionEvent event) throws IOException {
-        if (textField.getText().equals(items.get(currentIndex.get()).getTranslation())) {
+        if (textField.getText().equals(items.get(currentIndex).getTranslation())) {
             correctAlert.showAndWait();
-            correctAnswers.getAndIncrement();
+            correctAnswers++;
         } else {
             var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(items.get(currentIndex.get()).getTranslation());
+            alert.setHeaderText(items.get(currentIndex).getTranslation());
             alert.showAndWait();
         }
-        var index = currentIndex.incrementAndGet();
+        var index = ++currentIndex;
         if (index < items.size()) {
             text.setText(items.get(index).getOriginal());
             textField.setText("");
         } else {
             var alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Correct answers: %d/%d".formatted(correctAnswers.get(), items.size()));
+            alert.setHeaderText("Correct answers: %d/%d".formatted(correctAnswers, items.size()));
             alert.showAndWait();
             ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(PassController.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")));
         }
