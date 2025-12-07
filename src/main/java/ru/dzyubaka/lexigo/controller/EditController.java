@@ -18,6 +18,7 @@ public class EditController {
     @FXML
     private TableView<Item> tableView;
     private boolean dirty = false;
+    private Item lastRemoved;
 
     void setItems(ObservableList<Item> items) {
         tableView.setItems(items);
@@ -78,7 +79,17 @@ public class EditController {
 
     @FXML
     private void remove() {
-        tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
+        var model = tableView.getSelectionModel();
+        lastRemoved = model.getSelectedItem();
+        tableView.getItems().remove(model.getSelectedIndex());
         dirty = true;
+    }
+
+    @FXML
+    private void restore() {
+        if (lastRemoved != null) {
+            tableView.getItems().add(lastRemoved);
+            lastRemoved = null;
+        }
     }
 }
