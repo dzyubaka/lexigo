@@ -24,7 +24,7 @@ public class TakeController {
     private ObservableList<Item> items;
 
     private int currentIndex = 0;
-    private int correctAnswers = 0;
+    private int score = 0;
 
     {
         correctAlert.setHeaderText("Correct!");
@@ -40,7 +40,7 @@ public class TakeController {
     private void next(ActionEvent event) throws IOException {
         if (textField.getText().equals(items.get(currentIndex).getEnglish())) {
             correctAlert.showAndWait();
-            correctAnswers++;
+            score += 5;
         } else {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(items.get(currentIndex).getEnglish());
@@ -52,13 +52,13 @@ public class TakeController {
             textField.setText("");
         } else {
             Alert alert;
-            if (correctAnswers == items.size()) {
+            if (score == items.size() * 5) {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.getDialogPane().setGraphic(correctAlert.getGraphic());
             } else {
                 alert = new Alert(Alert.AlertType.ERROR);
             }
-            alert.setHeaderText("Correct answers: %d/%d".formatted(correctAnswers, items.size()));
+            alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
             alert.showAndWait();
             ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("../view/menu.fxml")));
         }
