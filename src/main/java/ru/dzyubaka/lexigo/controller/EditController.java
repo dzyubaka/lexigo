@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -18,6 +20,7 @@ import java.nio.file.Files;
 public class EditController {
     @FXML
     private TableView<Item> tableView;
+    private boolean dirty = false;
 
     void setItems(ObservableList<Item> items) {
         tableView.setItems(items);
@@ -28,19 +31,27 @@ public class EditController {
         var originalColumn = new TableColumn<Item, String>("Original");
         originalColumn.setCellValueFactory(data -> data.getValue().originalProperty());
         originalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
-        originalColumn.setOnEditCommit(event -> event.getRowValue().setOriginal(event.getNewValue()));
+        originalColumn.setOnEditCommit(event -> {
+            event.getRowValue().setOriginal(event.getNewValue());
+            dirty = true;
+        });
 
         var translationColumn = new TableColumn<Item, String>("Translation");
         translationColumn.setCellValueFactory(data -> data.getValue().translationProperty());
         translationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
-        translationColumn.setOnEditCommit(event -> event.getRowValue().setTranslation(event.getNewValue()));
+        translationColumn.setOnEditCommit(event -> {
+            event.getRowValue().setTranslation(event.getNewValue());
+            dirty = true;
+        });
 
         tableView.getColumns().setAll(originalColumn, translationColumn);
     }
 
     @FXML
     private void back(ActionEvent event) throws IOException {
-        ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")));
+        if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
+            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")));
+        }
     }
 
     @FXML
@@ -58,6 +69,7 @@ public class EditController {
                     bufferedWriter.append(item.getOriginal()).append(',')
                             .append(item.getTranslation()).append('\n');
                 }
+                dirty = false;
                 back(event);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -68,5 +80,6 @@ public class EditController {
     @FXML
     private void remove() {
         tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
+        dirty = true;
     }
 }
