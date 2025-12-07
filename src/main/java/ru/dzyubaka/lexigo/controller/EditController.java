@@ -47,7 +47,7 @@ public class EditController {
     @FXML
     private void back(ActionEvent event) throws IOException {
         if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")));
+            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("../view/menu.fxml")));
         }
     }
 

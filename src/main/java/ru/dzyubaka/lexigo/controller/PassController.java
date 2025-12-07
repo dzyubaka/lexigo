@@ -28,7 +28,7 @@ public class PassController {
 
     {
         correctAlert.setHeaderText("Correct!");
-        correctAlert.getDialogPane().setGraphic(new ImageView(PassController.class.getResource("/ru/dzyubaka/lexigo/accept.png").toExternalForm()));
+        correctAlert.getDialogPane().setGraphic(new ImageView(PassController.class.getResource("../accept.png").toExternalForm()));
     }
 
     void setItems(ObservableList<Item> items) {
@@ -54,7 +54,7 @@ public class PassController {
             var alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Correct answers: %d/%d".formatted(correctAnswers, items.size()));
             alert.showAndWait();
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(PassController.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")));
+            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(PassController.class.getResource("../view/menu.fxml")));
         }
     }
 }
