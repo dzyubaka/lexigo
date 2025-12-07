@@ -64,4 +64,9 @@ public class EditController {
             }
         }
     }
+
+    @FXML
+    private void remove() {
+        tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
+    }
 }
