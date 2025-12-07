@@ -42,6 +42,7 @@ public class EditController {
         });
 
         tableView.getColumns().setAll(russianColumn, englishColumn);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
     }
 
     @FXML
