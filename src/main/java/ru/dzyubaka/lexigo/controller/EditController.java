@@ -5,17 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DefaultStringConverter;
 import ru.dzyubaka.lexigo.Item;
-import ru.dzyubaka.lexigo.Main;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class EditController {
     @FXML
@@ -61,10 +58,11 @@ public class EditController {
 
     @FXML
     private void save(ActionEvent event) {
-        var file = Main.fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
-        if (file != null) {
+        var dialog = new TextInputDialog();
+        dialog.setHeaderText("Enter test name");
+        dialog.showAndWait().ifPresent(name -> {
             var items = tableView.getItems();
-            try (var bufferedWriter = Files.newBufferedWriter(file.toPath())) {
+            try (var bufferedWriter = Files.newBufferedWriter(Path.of(name + ".csv"))) {
                 for (var item : items) {
                     bufferedWriter.append(item.getOriginal()).append(',')
                             .append(item.getTranslation()).append('\n');
@@ -74,7 +72,7 @@ public class EditController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        });
     }
 
     @FXML
