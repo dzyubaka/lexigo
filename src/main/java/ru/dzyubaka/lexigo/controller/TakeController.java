@@ -51,7 +51,13 @@ public class TakeController {
             text.setText(items.get(index).getRussian());
             textField.setText("");
         } else {
-            var alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert;
+            if (correctAnswers == items.size()) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.getDialogPane().setGraphic(correctAlert.getGraphic());
+            } else {
+                alert = new Alert(Alert.AlertType.ERROR);
+            }
             alert.setHeaderText("Correct answers: %d/%d".formatted(correctAnswers, items.size()));
             alert.showAndWait();
             ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("../view/menu.fxml")));
