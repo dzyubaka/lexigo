@@ -23,7 +23,7 @@ public class Main extends Application {
         var scene = new Scene(FXMLLoader.load(Main.class.getResource("/ru/dzyubaka/lexigo/view/menu.fxml")), 640, 360);
         scene.getStylesheets().add("/ru/dzyubaka/lexigo/styles.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("LexiGo! v0.3");
+        primaryStage.setTitle("LexiGo! v0.3.0");
         primaryStage.show();
     }
 }

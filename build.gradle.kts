@@ -9,7 +9,7 @@ application {
 jlink {
     options = listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
     jpackage {
-        imageName = "LexiGo! v0.3"
-        appVersion = "0.3"
+        imageName = "LexiGo! v0.3.0"
+        appVersion = "0.3.0"
     }
 }
