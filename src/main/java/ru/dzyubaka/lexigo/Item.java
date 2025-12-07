@@ -4,40 +4,40 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Item {
-    private StringProperty original;
-    private StringProperty translation;
+    private StringProperty russian;
+    private StringProperty english;
 
-    public Item(String original, String translation) {
-        setOriginal(original);
-        setTranslation(translation);
+    public Item(String russian, String english) {
+        setRussian(russian);
+        setEnglish(english);
     }
 
-    public String getOriginal() {
-        return originalProperty().get();
+    public String getRussian() {
+        return russianProperty().get();
     }
 
-    public void setOriginal(String value) {
-        originalProperty().set(value);
+    public void setRussian(String value) {
+        russianProperty().set(value);
     }
 
-    public StringProperty originalProperty() {
-        if (original == null) {
-            original = new SimpleStringProperty(this, "original");
+    public StringProperty russianProperty() {
+        if (russian == null) {
+            russian = new SimpleStringProperty(this, "russian");
         }
-        return original;
+        return russian;
     }
-    public String getTranslation() {
-        return translationProperty().get();
-    }
-
-    public void setTranslation(String value) {
-        translationProperty().set(value);
+    public String getEnglish() {
+        return englishProperty().get();
     }
 
-    public StringProperty translationProperty() {
-        if (translation == null) {
-            translation = new SimpleStringProperty(this, "translation");
+    public void setEnglish(String value) {
+        englishProperty().set(value);
+    }
+
+    public StringProperty englishProperty() {
+        if (english == null) {
+            english = new SimpleStringProperty(this, "english");
         }
-        return translation;
+        return english;
     }
 }

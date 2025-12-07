@@ -25,23 +25,23 @@ public class EditController {
 
     @FXML
     private void initialize() {
-        var originalColumn = new TableColumn<Item, String>("Original");
-        originalColumn.setCellValueFactory(data -> data.getValue().originalProperty());
-        originalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
-        originalColumn.setOnEditCommit(event -> {
-            event.getRowValue().setOriginal(event.getNewValue());
+        var russianColumn = new TableColumn<Item, String>("Russian");
+        russianColumn.setCellValueFactory(data -> data.getValue().russianProperty());
+        russianColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        russianColumn.setOnEditCommit(event -> {
+            event.getRowValue().setRussian(event.getNewValue());
             dirty = true;
         });
 
-        var translationColumn = new TableColumn<Item, String>("Translation");
-        translationColumn.setCellValueFactory(data -> data.getValue().translationProperty());
-        translationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
-        translationColumn.setOnEditCommit(event -> {
-            event.getRowValue().setTranslation(event.getNewValue());
+        var englishColumn = new TableColumn<Item, String>("English");
+        englishColumn.setCellValueFactory(data -> data.getValue().englishProperty());
+        englishColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        englishColumn.setOnEditCommit(event -> {
+            event.getRowValue().setEnglish(event.getNewValue());
             dirty = true;
         });
 
-        tableView.getColumns().setAll(originalColumn, translationColumn);
+        tableView.getColumns().setAll(russianColumn, englishColumn);
     }
 
     @FXML
@@ -64,8 +64,8 @@ public class EditController {
             var items = tableView.getItems();
             try (var bufferedWriter = Files.newBufferedWriter(Path.of(name + ".csv"))) {
                 for (var item : items) {
-                    bufferedWriter.append(item.getOriginal()).append(',')
-                            .append(item.getTranslation()).append('\n');
+                    bufferedWriter.append(item.getRussian()).append(',')
+                            .append(item.getEnglish()).append('\n');
                 }
                 dirty = false;
                 back(event);
