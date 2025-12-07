@@ -33,22 +33,22 @@ public class TakeController {
 
     void setItems(ObservableList<Item> items) {
         this.items = items;
-        text.setText(items.getFirst().getOriginal());
+        text.setText(items.getFirst().getRussian());
     }
 
     @FXML
     private void next(ActionEvent event) throws IOException {
-        if (textField.getText().equals(items.get(currentIndex).getTranslation())) {
+        if (textField.getText().equals(items.get(currentIndex).getEnglish())) {
             correctAlert.showAndWait();
             correctAnswers++;
         } else {
             var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(items.get(currentIndex).getTranslation());
+            alert.setHeaderText(items.get(currentIndex).getEnglish());
             alert.showAndWait();
         }
         var index = ++currentIndex;
         if (index < items.size()) {
-            text.setText(items.get(index).getOriginal());
+            text.setText(items.get(index).getRussian());
             textField.setText("");
         } else {
             var alert = new Alert(Alert.AlertType.INFORMATION);
