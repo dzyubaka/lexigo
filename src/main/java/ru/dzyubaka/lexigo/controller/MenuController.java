@@ -49,9 +49,9 @@ public class MenuController {
                     return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
                 }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                 Collections.shuffle(items);
-                var loader = new FXMLLoader(MenuController.class.getResource("../view/pass.fxml"));
+                var loader = new FXMLLoader(MenuController.class.getResource("../view/take.fxml"));
                 var root = loader.<Parent>load();
-                loader.<PassController>getController().setItems(items);
+                loader.<TakeController>getController().setItems(items);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
