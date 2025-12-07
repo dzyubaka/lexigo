@@ -13,6 +13,7 @@
             <Button text="Back" onAction="#back"/>
             <Button text="Add" onAction="#add"/>
             <Button text="Save" onAction="#save"/>
+            <Button text="Remove" onAction="#remove"/>
         </ToolBar>
     </top>
 </BorderPane>
