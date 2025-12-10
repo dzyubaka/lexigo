@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.TakeController" alignment="CENTER">
-    <Region VBox.vgrow="ALWAYS"/>
-    <Text fx:id="text" VBox.vgrow="ALWAYS"/>
-    <Region VBox.vgrow="ALWAYS"/>
-    <TextField fx:id="textField" VBox.vgrow="ALWAYS" alignment="CENTER" onAction="#next"/>
-    <Region VBox.vgrow="ALWAYS"/>
-    <Button VBox.vgrow="ALWAYS" text="Next" onAction="#next"/>
-    <Region VBox.vgrow="ALWAYS"/>
-</VBox>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.TakeController">
+    <center>
+        <VBox alignment="CENTER">
+            <Region VBox.vgrow="ALWAYS"/>
+            <Text fx:id="text" VBox.vgrow="ALWAYS"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <TextField fx:id="textField" VBox.vgrow="ALWAYS" alignment="CENTER" onAction="#next"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button fx:id="button" VBox.vgrow="ALWAYS" text="Next" onAction="#next"/>
+            <GridPane fx:id="gridPane" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </center>
+    <top>
+        <ToolBar>
+            <Button text="First" onAction="#first"/>
+            <Button text="Length" onAction="#length"/>
+            <Button text="Scatter" onAction="#scatter"/>
+        </ToolBar>
+    </top>
+</BorderPane>
