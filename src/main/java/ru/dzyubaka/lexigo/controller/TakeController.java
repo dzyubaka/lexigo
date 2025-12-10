@@ -6,19 +6,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 import ru.dzyubaka.lexigo.Item;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Random;
 
 public class TakeController {
+    private final Random random = new Random();
+
     @FXML
     private Text text;
 
     @FXML
     private TextField textField;
+
+    @FXML
+    private Button button;
+
+    @FXML
+    private GridPane gridPane;
 
     private final Alert correctAlert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<Item> items;
@@ -37,7 +52,28 @@ public class TakeController {
     }
 
     @FXML
-    private void next(ActionEvent event) throws IOException {
+    private void initialize() {
+        var rowCount = 4;
+        var rowConstraints = gridPane.getRowConstraints();
+        var rowConstraint = new RowConstraints();
+        rowConstraint.setPercentHeight(100. / rowCount);
+
+        for (int i = 0; i < rowCount; i++) {
+            rowConstraints.add(rowConstraint);
+        }
+
+        var columnCount = 12;
+        var columnConstraints = gridPane.getColumnConstraints();
+        var columnConstraint = new ColumnConstraints();
+        columnConstraint.setPercentWidth(100. / columnCount);
+
+        for (int i = 0; i < columnCount; i++) {
+            columnConstraints.add(columnConstraint);
+        }
+    }
+
+    @FXML
+    private void next(ActionEvent event) {
         if (textField.getText().equals(items.get(currentIndex).getEnglish())) {
             correctAlert.showAndWait();
             score += 5;
@@ -60,7 +96,72 @@ public class TakeController {
             }
             alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
             alert.showAndWait();
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("../view/menu.fxml")));
+            try {
+                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("../view/menu.fxml")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+    }
+
+    @FXML
+    private void first(ActionEvent event) {
+        ((Node) event.getSource()).setDisable(true);
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().charAt(0)));
+        alert.show();
+        score--;
+    }
+
+    @FXML
+    private void length(ActionEvent event) {
+        ((Node) event.getSource()).setDisable(true);
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().length()));
+        alert.show();
+        score--;
+    }
+
+    @FXML
+    private void scatter(ActionEvent event) {
+        ((Node) event.getSource()).setDisable(true);
+        textField.setEditable(false);
+        button.setVisible(false);
+        button.setManaged(false);
+        gridPane.setDisable(false);
+        var columnCount = gridPane.getColumnConstraints().size();
+        var rowCount = gridPane.getRowConstraints().size();
+        var points = new HashSet<Pair<Integer, Integer>>();
+        var english = items.get(currentIndex).getEnglish();
+        english.chars().forEach(c -> {
+            var text = String.valueOf((char) c);
+            var button = new Button(text);
+            button.setOnAction(_ -> {
+                if (english.startsWith(textField.getText() + text)) {
+                    textField.appendText(text);
+                    gridPane.getChildren().remove(button);
+                    if (english.length() == textField.getLength()) {
+                        this.button.setVisible(true);
+                        this.button.setManaged(true);
+                        next(event);
+                        ((Node) event.getSource()).setDisable(false);
+                        textField.setEditable(false);
+                    }
+                } else {
+                    var alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Wrong letter!");
+                    alert.show();
+                }
+            });
+            button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            button.setFocusTraversable(false);
+            Pair<Integer, Integer> pair;
+            do {
+                pair = new Pair<>(random.nextInt(columnCount), random.nextInt(rowCount));
+            } while (points.contains(pair));
+            points.add(pair);
+            gridPane.add(button, pair.getKey(), pair.getValue());
+        });
+        score -= 2;
     }
 }
