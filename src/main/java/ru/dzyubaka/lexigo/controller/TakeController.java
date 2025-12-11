@@ -97,7 +97,7 @@ public class TakeController {
             alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
             alert.showAndWait();
             try {
-                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("../view/menu.fxml")));
+                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("menu.fxml")));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
