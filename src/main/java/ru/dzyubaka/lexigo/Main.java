@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        var scene = new Scene(FXMLLoader.load(Main.class.getResource("view/menu.fxml")), 640, 400);
+        var scene = new Scene(FXMLLoader.load(Main.class.getResource("controller/menu.fxml")), 640, 400);
         scene.getStylesheets().add(Main.class.getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("LexiGo! v0.3.0");
