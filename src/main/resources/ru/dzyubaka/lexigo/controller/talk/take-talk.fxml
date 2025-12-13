@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.dzyubaka.lexigo.controller.talk.TakeTalkController">
+    <top>
+        <ToolBar fx:id="toolBar">
+            <Button text="Back" onAction="#back"/>
+            <ProgressBar fx:id="progressBar"
+                         progress="1"
+                         prefWidth="500"/>
+        </ToolBar>
+    </top>
+    <center>
+        <Label fx:id="label" wrapText="true"/>
+    </center>
+</BorderPane>

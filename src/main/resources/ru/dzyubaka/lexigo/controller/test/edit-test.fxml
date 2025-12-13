@@ -5,10 +5,8 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.EditController">
-    <center>
-        <TableView fx:id="tableView" editable="true"/>
-    </center>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.dzyubaka.lexigo.controller.test.EditTestController">
     <top>
         <ToolBar>
             <Button text="Back" onAction="#back"/>
@@ -18,4 +16,7 @@
             <Button text="Restore" onAction="#restore"/>
         </ToolBar>
     </top>
+    <center>
+        <TableView fx:id="tableView" editable="true"/>
+    </center>
 </BorderPane>

@@ -9,7 +9,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dzyubaka.lexigo.controller.TakeController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.dzyubaka.lexigo.controller.test.TakeTestController">
+    <top>
+        <ToolBar>
+            <Button text="First" onAction="#first"/>
+            <Button text="Length" onAction="#length"/>
+            <Button text="Scatter" onAction="#scatter"/>
+        </ToolBar>
+    </top>
     <center>
         <VBox alignment="CENTER">
             <Region VBox.vgrow="ALWAYS"/>
@@ -21,11 +29,4 @@
             <GridPane fx:id="gridPane" VBox.vgrow="ALWAYS"/>
         </VBox>
     </center>
-    <top>
-        <ToolBar>
-            <Button text="First" onAction="#first"/>
-            <Button text="Length" onAction="#length"/>
-            <Button text="Scatter" onAction="#scatter"/>
-        </ToolBar>
-    </top>
 </BorderPane>

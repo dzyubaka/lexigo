@@ -1,4 +1,4 @@
-package ru.dzyubaka.lexigo.controller;
+package ru.dzyubaka.lexigo.controller.test;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,13 +15,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 
-public class EditController {
+public class EditTestController {
     @FXML
     private TableView<Item> tableView;
+
     private boolean dirty = false;
+
     private Item lastRemoved;
 
-    void setItems(ObservableList<Item> items) {
+    public void setItems(ObservableList<Item> items) {
         tableView.setItems(items);
     }
 
@@ -51,7 +53,7 @@ public class EditController {
     @FXML
     private void back(ActionEvent event) throws IOException {
         if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(EditController.class.getResource("menu.fxml")));
+            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(EditTestController.class.getResource("../menu.fxml")));
         }
     }
 
