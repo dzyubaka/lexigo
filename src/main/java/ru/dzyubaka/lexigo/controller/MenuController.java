@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
@@ -28,7 +29,7 @@ public class MenuController {
 
     @FXML
     private void editTest(ActionEvent event) {
-        showChoiceDialog(".csv", "Select test", name -> {
+        showChoiceDialog(".csv", "test", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
                 var loader = new FXMLLoader(MenuController.class.getResource("test/edit-test.fxml"));
                 var root = loader.<Parent>load();
@@ -46,7 +47,7 @@ public class MenuController {
 
     @FXML
     private void takeTest(ActionEvent event) {
-        showChoiceDialog(".csv", "Select test", name -> {
+        showChoiceDialog(".csv", "test", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
                 var items = bufferedReader.readAllLines().stream().map(line -> {
                     var commaIndex = line.indexOf(',');
@@ -70,7 +71,7 @@ public class MenuController {
 
     @FXML
     private void editTalk(ActionEvent event) {
-        showChoiceDialog(".txt", "Select talk", name -> {
+        showChoiceDialog(".txt", "talk", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
                 var loader = new FXMLLoader(MenuController.class.getResource("talk/edit-talk.fxml"));
                 var root = loader.<Parent>load();
@@ -85,7 +86,7 @@ public class MenuController {
 
     @FXML
     private void takeTalk(ActionEvent event) {
-        showChoiceDialog(".txt", "Select talk", name -> {
+        showChoiceDialog(".txt", "talk", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
                 var text = bufferedReader.readAllAsString();
                 var loader = new FXMLLoader(MenuController.class.getResource("talk/take-talk.fxml"));
@@ -105,9 +106,15 @@ public class MenuController {
                     .filter(n -> n.endsWith(extension))
                     .map(n -> n.substring(0, n.length() - 4))
                     .collect(Collectors.toList());
-            var dialog = new ChoiceDialog<>(null, paths);
-            dialog.setHeaderText(text);
-            dialog.showAndWait().ifPresent(action);
+            if (paths.isEmpty()) {
+                var alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("There are no any " + text + "s!");
+                alert.show();
+            } else {
+                var dialog = new ChoiceDialog<>(null, paths);
+                dialog.setHeaderText("Select " + text);
+                dialog.showAndWait().ifPresent(action);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
