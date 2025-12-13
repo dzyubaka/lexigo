@@ -1,4 +1,4 @@
-package ru.dzyubaka.lexigo.controller;
+package ru.dzyubaka.lexigo.controller.test;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
-public class TakeController {
+public class TakeTestController {
     private final Random random = new Random();
 
     @FXML
@@ -43,10 +43,10 @@ public class TakeController {
 
     {
         correctAlert.setHeaderText("Correct!");
-        correctAlert.getDialogPane().setGraphic(new ImageView(TakeController.class.getResource("../accept.png").toExternalForm()));
+        correctAlert.getDialogPane().setGraphic(new ImageView(TakeTestController.class.getResource("../../accept.png").toExternalForm()));
     }
 
-    void setItems(ObservableList<Item> items) {
+    public void setItems(ObservableList<Item> items) {
         this.items = items;
         text.setText(items.getFirst().getRussian());
     }
@@ -97,7 +97,7 @@ public class TakeController {
             alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
             alert.showAndWait();
             try {
-                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeController.class.getResource("menu.fxml")));
+                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

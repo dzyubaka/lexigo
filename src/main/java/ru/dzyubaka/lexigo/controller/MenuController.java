@@ -8,6 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
+import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
+import ru.dzyubaka.lexigo.controller.talk.TakeTalkController;
+import ru.dzyubaka.lexigo.controller.test.EditTestController;
+import ru.dzyubaka.lexigo.controller.test.TakeTestController;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,21 +22,21 @@ import java.util.stream.Collectors;
 
 public class MenuController {
     @FXML
-    private void create(ActionEvent event) throws IOException {
-        ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("edit.fxml")));
+    private void createTest(ActionEvent event) throws IOException {
+        ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("test/edit-test.fxml")));
     }
 
     @FXML
-    private void edit(ActionEvent event) {
-        showChoiceDialog(name -> {
+    private void editTest(ActionEvent event) {
+        showChoiceDialog(".csv", "Select test", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
-                var loader = new FXMLLoader(MenuController.class.getResource("edit.fxml"));
+                var loader = new FXMLLoader(MenuController.class.getResource("test/edit-test.fxml"));
                 var root = loader.<Parent>load();
                 var items = bufferedReader.readAllLines().stream().map(line -> {
                     var commaIndex = line.indexOf(',');
                     return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
                 }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-                loader.<EditController>getController().setItems(items);
+                loader.<EditTestController>getController().setItems(items);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -41,17 +45,17 @@ public class MenuController {
     }
 
     @FXML
-    private void take(ActionEvent event) {
-        showChoiceDialog(name -> {
+    private void takeTest(ActionEvent event) {
+        showChoiceDialog(".csv", "Select test", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
                 var items = bufferedReader.readAllLines().stream().map(line -> {
                     var commaIndex = line.indexOf(',');
                     return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
                 }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                 Collections.shuffle(items);
-                var loader = new FXMLLoader(MenuController.class.getResource("take.fxml"));
+                var loader = new FXMLLoader(MenuController.class.getResource("test/take-test.fxml"));
                 var root = loader.<Parent>load();
-                loader.<TakeController>getController().setItems(items);
+                loader.<TakeTestController>getController().setItems(items);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -59,15 +63,50 @@ public class MenuController {
         });
     }
 
-    private void showChoiceDialog(Consumer<String> action) {
+    @FXML
+    private void createTalk(ActionEvent event) throws IOException {
+        ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("talk/edit-talk.fxml")));
+    }
+
+    @FXML
+    private void editTalk(ActionEvent event) {
+        showChoiceDialog(".txt", "Select talk", name -> {
+            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+                var loader = new FXMLLoader(MenuController.class.getResource("talk/edit-talk.fxml"));
+                var root = loader.<Parent>load();
+                var text = bufferedReader.readAllAsString();
+                loader.<EditTalkController>getController().setText(text);
+                ((Node) event.getSource()).getScene().setRoot(root);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @FXML
+    private void takeTalk(ActionEvent event) {
+        showChoiceDialog(".txt", "Select talk", name -> {
+            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+                var text = bufferedReader.readAllAsString();
+                var loader = new FXMLLoader(MenuController.class.getResource("talk/take-talk.fxml"));
+                var root = loader.<Parent>load();
+                loader.<TakeTalkController>getController().setText(text);
+                ((Node) event.getSource()).getScene().setRoot(root);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void showChoiceDialog(String extension, String text, Consumer<String> action) {
         try (var list = Files.list(Path.of("."))) {
             var paths = list
                     .map(p -> p.getFileName().toString())
-                    .filter(n -> n.endsWith(".csv"))
+                    .filter(n -> n.endsWith(extension))
                     .map(n -> n.substring(0, n.length() - 4))
                     .collect(Collectors.toList());
             var dialog = new ChoiceDialog<>(null, paths);
-            dialog.setHeaderText("Select test");
+            dialog.setHeaderText(text);
             dialog.showAndWait().ifPresent(action);
         } catch (IOException e) {
             throw new RuntimeException(e);

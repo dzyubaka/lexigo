@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TextArea?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.dzyubaka.lexigo.controller.talk.EditTalkController">
+    <top>
+        <ToolBar>
+            <Button text="Back" onAction="#back"/>
+            <Button text="Save" onAction="#save"/>
+        </ToolBar>
+    </top>
+    <center>
+        <TextArea fx:id="textArea" wrapText="true"/>
+    </center>
+</BorderPane>
