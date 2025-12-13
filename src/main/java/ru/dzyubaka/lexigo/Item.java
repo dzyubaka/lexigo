@@ -7,6 +7,11 @@ public class Item {
     private StringProperty russian;
     private StringProperty english;
 
+    public Item() {
+        setRussian("");
+        setEnglish("");
+    }
+
     public Item(String russian, String english) {
         setRussian(russian);
         setEnglish(english);
