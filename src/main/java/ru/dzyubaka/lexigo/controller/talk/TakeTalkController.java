@@ -5,9 +5,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -46,9 +44,9 @@ public class TakeTalkController {
     }
 
     @FXML
-    private void back(ActionEvent event) throws IOException {
+    private void back(ActionEvent event) {
         timeline.stop();
-        ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTalkController.class.getResource("../menu.fxml")));
+        ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
     }
 
     @FXML

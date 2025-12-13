@@ -3,12 +3,12 @@ package ru.dzyubaka.lexigo.controller.test;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DefaultStringConverter;
 import ru.dzyubaka.lexigo.Item;
+import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -69,7 +69,7 @@ public class EditTestController {
     @FXML
     private void back(ActionEvent event) throws IOException {
         if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(EditTestController.class.getResource("../menu.fxml")));
+            ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
 
