@@ -7,13 +7,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ToolBar;
 import javafx.util.Duration;
+import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class TakeTalkController {
     private final static int PREPARE_MILLIS = 90_000;
@@ -33,8 +37,12 @@ public class TakeTalkController {
 
     private int millis = PREPARE_MILLIS;
 
-    public void setText(String text) {
-        label.setText(text);
+    public void loadTalk(String name) {
+        try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+            label.setText(bufferedReader.readAllAsString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
