@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -73,34 +74,11 @@ public class TakeTestController {
     }
 
     @FXML
-    private void next(ActionEvent event) {
-        if (textField.getText().equals(items.get(currentIndex).getEnglish())) {
-            correctAlert.showAndWait();
-            score += 5;
-        } else {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(items.get(currentIndex).getEnglish());
-            alert.showAndWait();
-        }
-        var index = ++currentIndex;
-        if (index < items.size()) {
-            text.setText(items.get(index).getRussian());
-            textField.setText("");
-        } else {
-            Alert alert;
-            if (score == items.size() * 5) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.getDialogPane().setGraphic(correctAlert.getGraphic());
-            } else {
-                alert = new Alert(Alert.AlertType.ERROR);
-            }
-            alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
-            alert.showAndWait();
-            try {
-                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    private void back(ActionEvent event) throws IOException {
+        var alert = new Alert(Alert.AlertType.WARNING, null, ButtonType.OK, ButtonType.CANCEL);
+        alert.setHeaderText("Are you sure?");
+        if (alert.showAndWait().orElseThrow() == ButtonType.OK) {
+            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
         }
     }
 
@@ -163,5 +141,37 @@ public class TakeTestController {
             gridPane.add(button, pair.getKey(), pair.getValue());
         });
         score -= 2;
+    }
+
+    @FXML
+    private void next(ActionEvent event) {
+        if (textField.getText().equals(items.get(currentIndex).getEnglish())) {
+            correctAlert.showAndWait();
+            score += 5;
+        } else {
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(items.get(currentIndex).getEnglish());
+            alert.showAndWait();
+        }
+        var index = ++currentIndex;
+        if (index < items.size()) {
+            text.setText(items.get(index).getRussian());
+            textField.setText("");
+        } else {
+            Alert alert;
+            if (score == items.size() * 5) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.getDialogPane().setGraphic(correctAlert.getGraphic());
+            } else {
+                alert = new Alert(Alert.AlertType.ERROR);
+            }
+            alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
+            alert.showAndWait();
+            try {
+                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
