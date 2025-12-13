@@ -3,7 +3,6 @@ package ru.dzyubaka.lexigo.controller.test;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,8 +15,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import ru.dzyubaka.lexigo.Item;
+import ru.dzyubaka.lexigo.controller.MenuController;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -74,11 +73,11 @@ public class TakeTestController {
     }
 
     @FXML
-    private void back(ActionEvent event) throws IOException {
+    private void back(ActionEvent event) {
         var alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure?");
         if (alert.showAndWait().orElseThrow() == ButtonType.OK) {
-            ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
+            ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
 
@@ -167,11 +166,7 @@ public class TakeTestController {
             }
             alert.setHeaderText("Score: %d/%d".formatted(score, items.size() * 5));
             alert.showAndWait();
-            try {
-                ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
 }

@@ -22,6 +22,16 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class MenuController {
+    public static final Parent FXML;
+
+    static {
+        try {
+            FXML = FXMLLoader.load(MenuController.class.getResource("menu.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     private void createTest(ActionEvent event) throws IOException {
         ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(MenuController.class.getResource("test/edit-test.fxml")));
