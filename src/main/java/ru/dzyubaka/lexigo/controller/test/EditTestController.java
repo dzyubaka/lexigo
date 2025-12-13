@@ -1,6 +1,5 @@
 package ru.dzyubaka.lexigo.controller.test;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,6 +80,7 @@ public class EditTestController {
 
     @FXML
     private void save(ActionEvent event) {
+        var items = tableView.getItems().stream().filter(Item::isNotBlank).toList();
         if (path == null) {
             var dialog = new TextInputDialog();
             dialog.setHeaderText("Enter test name");
@@ -97,11 +97,9 @@ public class EditTestController {
             }
         }
         try (var bufferedWriter = Files.newBufferedWriter(path)) {
-            for (var item : tableView.getItems()) {
-                if (!item.getRussian().isBlank() && !item.getEnglish().isBlank()) {
-                    bufferedWriter.append(item.getRussian()).append(',')
-                            .append(item.getEnglish()).append('\n');
-                }
+            for (var item : items) {
+                bufferedWriter.append(item.getRussian()).append(',')
+                        .append(item.getEnglish()).append('\n');
             }
             dirty = false;
             back(event);
