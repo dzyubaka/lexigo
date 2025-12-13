@@ -1,5 +1,6 @@
 package ru.dzyubaka.lexigo.controller.test;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +43,8 @@ public class EditTestController {
     @FXML
     private void initialize() {
         var russianColumn = new TableColumn<Item, String>("Russian");
+        russianColumn.setSortable(false);
+        russianColumn.setReorderable(false);
         russianColumn.setCellValueFactory(data -> data.getValue().russianProperty());
         russianColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
         russianColumn.setOnEditCommit(event -> {
@@ -50,6 +53,8 @@ public class EditTestController {
         });
 
         var englishColumn = new TableColumn<Item, String>("English");
+        englishColumn.setSortable(false);
+        englishColumn.setReorderable(false);
         englishColumn.setCellValueFactory(data -> data.getValue().englishProperty());
         englishColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
         englishColumn.setOnEditCommit(event -> {
