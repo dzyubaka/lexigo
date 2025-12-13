@@ -112,7 +112,7 @@ public class MenuController {
                 alert.show();
             } else {
                 var dialog = new ChoiceDialog<>(null, paths);
-                dialog.setHeaderText("Select " + text);
+                dialog.setHeaderText("Select a " + text);
                 dialog.showAndWait().ifPresent(action);
             }
         } catch (IOException e) {
