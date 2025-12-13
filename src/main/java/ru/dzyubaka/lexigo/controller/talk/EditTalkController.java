@@ -45,6 +45,12 @@ public class EditTalkController {
 
     @FXML
     private void save(ActionEvent event) {
+        if (textArea.getText().isBlank()) {
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Talk is blank!");
+            alert.show();
+            return;
+        }
         if (path == null) {
             var dialog = new TextInputDialog();
             dialog.setHeaderText("Enter talk name");
