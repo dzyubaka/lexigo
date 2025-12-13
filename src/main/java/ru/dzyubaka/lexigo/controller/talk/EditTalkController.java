@@ -22,7 +22,7 @@ public class EditTalkController {
     private Path path;
 
     public void loadTalk(String name) {
-        this.path = Path.of(name + ".txt");
+        path = Path.of(name + ".txt");
         try (var bufferedReader = Files.newBufferedReader(path)) {
             textArea.setText(bufferedReader.readAllAsString());
             dirty = false;
@@ -51,6 +51,14 @@ public class EditTalkController {
             var name = dialog.showAndWait();
             if (name.isEmpty()) return;
             path = Path.of(name.orElseThrow() + ".txt");
+            if (Files.exists(path)) {
+                var alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Talk '" + name.orElseThrow() + "' already exists! Overwrite?");
+                if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
+                    path = null;
+                    return;
+                }
+            }
         }
         try (var bufferedWriter = Files.newBufferedWriter(path)) {
             bufferedWriter.write(textArea.getText());

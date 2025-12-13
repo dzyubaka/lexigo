@@ -81,7 +81,15 @@ public class EditTestController {
             dialog.setHeaderText("Enter test name");
             var name = dialog.showAndWait();
             if (name.isEmpty()) return;
-            this.path = Path.of(name.orElseThrow() + ".csv");
+            path = Path.of(name.orElseThrow() + ".csv");
+            if (Files.exists(path)) {
+                var alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Test '" + name.orElseThrow() + "' already exists! Overwrite?");
+                if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
+                    path = null;
+                    return;
+                }
+            }
         }
         try (var bufferedWriter = Files.newBufferedWriter(path)) {
             for (var item : tableView.getItems()) {
