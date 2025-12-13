@@ -1,6 +1,6 @@
 package ru.dzyubaka.lexigo.controller.test;
 
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class EditTestController {
     @FXML
@@ -21,10 +22,21 @@ public class EditTestController {
 
     private boolean dirty = false;
 
-    private Item lastRemoved;
+    private Path path;
 
-    public void setItems(ObservableList<Item> items) {
-        tableView.setItems(items);
+    private Item removed;
+
+    public void loadTest(String name) {
+        path = Path.of(name + ".csv");
+        try (var bufferedReader = Files.newBufferedReader(path)) {
+            var items = bufferedReader.readAllLines().stream().map(line -> {
+                var commaIndex = line.indexOf(',');
+                return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
+            }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tableView.setItems(items);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -64,36 +76,38 @@ public class EditTestController {
 
     @FXML
     private void save(ActionEvent event) {
-        var dialog = new TextInputDialog();
-        dialog.setHeaderText("Enter test name");
-        dialog.showAndWait().ifPresent(name -> {
-            var items = tableView.getItems();
-            try (var bufferedWriter = Files.newBufferedWriter(Path.of(name + ".csv"))) {
-                for (var item : items) {
-                    bufferedWriter.append(item.getRussian()).append(',')
-                            .append(item.getEnglish()).append('\n');
-                }
-                dirty = false;
-                back(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        if (path == null) {
+            var dialog = new TextInputDialog();
+            dialog.setHeaderText("Enter test name");
+            var name = dialog.showAndWait();
+            if (name.isEmpty()) return;
+            this.path = Path.of(name.orElseThrow() + ".csv");
+        }
+        try (var bufferedWriter = Files.newBufferedWriter(path)) {
+            for (var item : tableView.getItems()) {
+                bufferedWriter.append(item.getRussian()).append(',')
+                        .append(item.getEnglish()).append('\n');
             }
-        });
+            dirty = false;
+            back(event);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     private void remove() {
         var model = tableView.getSelectionModel();
-        lastRemoved = model.getSelectedItem();
+        removed = model.getSelectedItem();
         tableView.getItems().remove(model.getSelectedIndex());
         dirty = true;
     }
 
     @FXML
     private void restore() {
-        if (lastRemoved != null) {
-            tableView.getItems().add(lastRemoved);
-            lastRemoved = null;
+        if (removed != null) {
+            tableView.getItems().add(removed);
+            removed = null;
         }
     }
 }

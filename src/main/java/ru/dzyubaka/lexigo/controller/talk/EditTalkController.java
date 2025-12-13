@@ -19,14 +19,21 @@ public class EditTalkController {
 
     private boolean dirty = false;
 
+    private Path path;
+
+    public void loadTalk(String name) {
+        this.path = Path.of(name + ".txt");
+        try (var bufferedReader = Files.newBufferedReader(path)) {
+            textArea.setText(bufferedReader.readAllAsString());
+            dirty = false;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     private void initialize() {
         textArea.textProperty().addListener(_ -> dirty = true);
-    }
-
-    public void setText(String text) {
-        textArea.setText(text);
-        dirty = false;
     }
 
     @FXML
@@ -38,16 +45,19 @@ public class EditTalkController {
 
     @FXML
     private void save(ActionEvent event) {
-        var dialog = new TextInputDialog();
-        dialog.setHeaderText("Enter talk name");
-        dialog.showAndWait().ifPresent(name -> {
-            try (var bufferedWriter = Files.newBufferedWriter(Path.of(name + ".txt"))) {
-                bufferedWriter.write(textArea.getText());
-                dirty = false;
-                back(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        if (path == null) {
+            var dialog = new TextInputDialog();
+            dialog.setHeaderText("Enter talk name");
+            var name = dialog.showAndWait();
+            if (name.isEmpty()) return;
+            path = Path.of(name.orElseThrow() + ".txt");
+        }
+        try (var bufferedWriter = Files.newBufferedWriter(path)) {
+            bufferedWriter.write(textArea.getText());
+            dirty = false;
+            back(event);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

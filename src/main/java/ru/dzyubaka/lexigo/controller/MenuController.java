@@ -30,14 +30,10 @@ public class MenuController {
     @FXML
     private void editTest(ActionEvent event) {
         showChoiceDialog(".csv", "test", name -> {
-            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
+            try {
                 var loader = new FXMLLoader(MenuController.class.getResource("test/edit-test.fxml"));
                 var root = loader.<Parent>load();
-                var items = bufferedReader.readAllLines().stream().map(line -> {
-                    var commaIndex = line.indexOf(',');
-                    return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
-                }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-                loader.<EditTestController>getController().setItems(items);
+                loader.<EditTestController>getController().loadTest(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -72,11 +68,10 @@ public class MenuController {
     @FXML
     private void editTalk(ActionEvent event) {
         showChoiceDialog(".txt", "talk", name -> {
-            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+            try {
                 var loader = new FXMLLoader(MenuController.class.getResource("talk/edit-talk.fxml"));
                 var root = loader.<Parent>load();
-                var text = bufferedReader.readAllAsString();
-                loader.<EditTalkController>getController().setText(text);
+                loader.<EditTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -87,11 +82,10 @@ public class MenuController {
     @FXML
     private void takeTalk(ActionEvent event) {
         showChoiceDialog(".txt", "talk", name -> {
-            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
-                var text = bufferedReader.readAllAsString();
+            try {
                 var loader = new FXMLLoader(MenuController.class.getResource("talk/take-talk.fxml"));
                 var root = loader.<Parent>load();
-                loader.<TakeTalkController>getController().setText(text);
+                loader.<TakeTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);
