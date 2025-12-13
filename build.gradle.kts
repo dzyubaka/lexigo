@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "ru.dzyubaka"
-version = "0.4.0-SNAPSHOT"
+version = "0.4.0"
 
 application {
     mainModule = "ru.dzyubaka.lexigo"
@@ -15,7 +15,7 @@ application {
 jlink {
     options = listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
     jpackage {
-        imageName = "LexiGo"
+        imageName = "LexiGo! v0.4.0"
         appVersion = "0.4.0"
     }
 }
