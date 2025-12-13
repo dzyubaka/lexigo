@@ -75,7 +75,7 @@ public class TakeTestController {
 
     @FXML
     private void back(ActionEvent event) throws IOException {
-        var alert = new Alert(Alert.AlertType.WARNING, null, ButtonType.OK, ButtonType.CANCEL);
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure?");
         if (alert.showAndWait().orElseThrow() == ButtonType.OK) {
             ((Node) event.getSource()).getScene().setRoot(FXMLLoader.load(TakeTestController.class.getResource("../menu.fxml")));

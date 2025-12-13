@@ -26,6 +26,7 @@ public class EditTalkController {
 
     public void setText(String text) {
         textArea.setText(text);
+        dirty = false;
     }
 
     @FXML
