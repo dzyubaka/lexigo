@@ -45,4 +45,8 @@ public class Item {
         }
         return english;
     }
+
+    public boolean isNotBlank() {
+        return !getRussian().isBlank() && !getEnglish().isBlank();
+    }
 }
