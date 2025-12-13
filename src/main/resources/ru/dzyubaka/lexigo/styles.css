@@ -1,3 +1,7 @@
+VBox {
+    -fx-font-size: 2em;
+}
+
 .menu {
     -fx-font-size: 2em;
     -fx-spacing: 32;
