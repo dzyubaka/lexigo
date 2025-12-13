@@ -13,6 +13,7 @@
             fx:controller="ru.dzyubaka.lexigo.controller.test.TakeTestController">
     <top>
         <ToolBar>
+            <Button text="Back" onAction="#back"/>
             <Button text="First" onAction="#first"/>
             <Button text="Length" onAction="#length"/>
             <Button text="Scatter" onAction="#scatter"/>
