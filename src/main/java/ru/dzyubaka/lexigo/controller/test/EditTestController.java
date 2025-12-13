@@ -13,8 +13,8 @@ import ru.dzyubaka.lexigo.Item;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EditTestController {
     @FXML
@@ -59,7 +59,7 @@ public class EditTestController {
 
         tableView.getColumns().setAll(russianColumn, englishColumn);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        tableView.getItems().addAll(Collections.nCopies(5, new Item("", "")));
+        tableView.getItems().addAll(Stream.generate(Item::new).limit(5).toList());
     }
 
     @FXML
@@ -71,7 +71,7 @@ public class EditTestController {
 
     @FXML
     private void add() {
-        tableView.getItems().add(new Item("", ""));
+        tableView.getItems().add(new Item());
     }
 
     @FXML
@@ -85,8 +85,10 @@ public class EditTestController {
         }
         try (var bufferedWriter = Files.newBufferedWriter(path)) {
             for (var item : tableView.getItems()) {
-                bufferedWriter.append(item.getRussian()).append(',')
-                        .append(item.getEnglish()).append('\n');
+                if (!item.getRussian().isBlank() && !item.getEnglish().isBlank()) {
+                    bufferedWriter.append(item.getRussian()).append(',')
+                            .append(item.getEnglish()).append('\n');
+                }
             }
             dirty = false;
             back(event);
