@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
-import ru.dzyubaka.lexigo.controller.talk.TakeTalkController;
+import ru.dzyubaka.lexigo.controller.talk.StartTalkController;
 import ru.dzyubaka.lexigo.controller.test.EditTestController;
 import ru.dzyubaka.lexigo.controller.test.TakeTestController;
 
@@ -90,12 +90,12 @@ public class MenuController {
     }
 
     @FXML
-    private void takeTalk(ActionEvent event) {
+    private void startTalk(ActionEvent event) {
         showChoiceDialog(".txt", "talk", name -> {
             try {
-                var loader = new FXMLLoader(MenuController.class.getResource("talk/take-talk.fxml"));
+                var loader = new FXMLLoader(MenuController.class.getResource("talk/start-talk.fxml"));
                 var root = loader.<Parent>load();
-                loader.<TakeTalkController>getController().loadTalk(name);
+                loader.<StartTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new RuntimeException(e);

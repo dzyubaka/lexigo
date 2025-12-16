@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class TakeTalkController {
+public class StartTalkController {
     private final static int PREPARE_MILLIS = 90_000;
 
     private final static int TALK_MILLIS = 120_000;
