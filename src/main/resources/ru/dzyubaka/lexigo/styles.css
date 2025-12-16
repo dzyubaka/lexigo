@@ -9,7 +9,7 @@ VBox {
     -fx-border-color: -fx-box-border;
 }
 
-.table-view .column-header-background, .table-row-cell {
+Label, .table-view .column-header-background, .table-row-cell {
     -fx-font-size: 1.5em;
 }
 
