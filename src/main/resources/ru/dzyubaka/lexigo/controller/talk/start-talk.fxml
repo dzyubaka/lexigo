@@ -7,7 +7,7 @@
 <?import javafx.scene.control.ToolBar?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.dzyubaka.lexigo.controller.talk.TakeTalkController">
+            fx:controller="ru.dzyubaka.lexigo.controller.talk.StartTalkController">
     <top>
         <ToolBar fx:id="toolBar">
             <Button text="Back" onAction="#back"/>
