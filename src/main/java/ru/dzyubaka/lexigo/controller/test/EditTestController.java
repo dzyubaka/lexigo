@@ -1,11 +1,15 @@
 package ru.dzyubaka.lexigo.controller.test;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.MenuController;
@@ -45,7 +49,7 @@ public class EditTestController {
         russianColumn.setSortable(false);
         russianColumn.setReorderable(false);
         russianColumn.setCellValueFactory(data -> data.getValue().russianProperty());
-        russianColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        russianColumn.setCellFactory(createCellFactory());
         russianColumn.setOnEditCommit(event -> {
             event.getRowValue().setRussian(event.getNewValue());
             dirty = true;
@@ -55,7 +59,7 @@ public class EditTestController {
         englishColumn.setSortable(false);
         englishColumn.setReorderable(false);
         englishColumn.setCellValueFactory(data -> data.getValue().englishProperty());
-        englishColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        englishColumn.setCellFactory(createCellFactory());
         englishColumn.setOnEditCommit(event -> {
             event.getRowValue().setEnglish(event.getNewValue());
             dirty = true;
@@ -128,5 +132,21 @@ public class EditTestController {
             tableView.getItems().add(removed);
             removed = null;
         }
+    }
+
+    private Callback<TableColumn<Item, String>, TableCell<Item, String>> createCellFactory() {
+        return column -> {
+            var cell = new TextFieldTableCell<Item, String>(new DefaultStringConverter());
+            cell.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    var nextRow = cell.getIndex() + 1;
+                    Platform.runLater(() -> {
+                        tableView.getSelectionModel().select(nextRow, column);
+                        tableView.edit(nextRow, column);
+                    });
+                }
+            });
+            return cell;
+        };
     }
 }
