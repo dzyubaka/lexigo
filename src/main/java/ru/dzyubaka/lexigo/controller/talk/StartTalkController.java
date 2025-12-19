@@ -6,10 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.util.Duration;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
@@ -45,8 +42,10 @@ public class StartTalkController {
 
     @FXML
     private void back(ActionEvent event) {
-        timeline.stop();
-        ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
+        if (new Alert(Alert.AlertType.CONFIRMATION, "Really exit?").showAndWait().orElseThrow() == ButtonType.OK) {
+            timeline.stop();
+            ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
+        }
     }
 
     @FXML
