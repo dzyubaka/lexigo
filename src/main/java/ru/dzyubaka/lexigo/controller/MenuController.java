@@ -112,7 +112,7 @@ public class MenuController {
                     .collect(Collectors.toList());
             if (paths.isEmpty()) {
                 var alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("There are no any " + text + "s!");
+                alert.setHeaderText("There are no %ss!".formatted(text));
                 alert.show();
             } else {
                 var dialog = new ChoiceDialog<>(null, paths);
