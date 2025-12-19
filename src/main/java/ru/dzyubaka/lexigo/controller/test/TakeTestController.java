@@ -15,6 +15,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import ru.dzyubaka.lexigo.Item;
+import ru.dzyubaka.lexigo.Main;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class TakeTestController {
 
     {
         correctAlert.setHeaderText("Correct!");
-        correctAlert.getDialogPane().setGraphic(new ImageView(TakeTestController.class.getResource("../../accept.png").toExternalForm()));
+        correctAlert.getDialogPane().setGraphic(new ImageView(Main.class.getResource("accept.png").toExternalForm()));
     }
 
     public void setItems(ObservableList<Item> items) {
