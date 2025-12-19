@@ -12,6 +12,12 @@ application {
     mainClass = "ru.dzyubaka.lexigo.Main"
 }
 
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "ru.dzyubaka.lexigo.Main"
+    }
+}
+
 jlink {
     options = listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
     jpackage {
