@@ -13,11 +13,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import javafx.util.Pair;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.Main;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.random.RandomGenerator;
 
@@ -118,7 +118,7 @@ public class TakeTestController {
         gridPane.setDisable(false);
         var columnCount = gridPane.getColumnConstraints().size();
         var rowCount = gridPane.getRowConstraints().size();
-        var points = new HashSet<Pair<Integer, Integer>>();
+        var points = new HashSet<Point>();
         var english = items.get(currentIndex).getEnglish();
         english.chars().forEach(c -> {
             var text = String.valueOf((char) c);
@@ -142,12 +142,12 @@ public class TakeTestController {
             });
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             button.setFocusTraversable(false);
-            Pair<Integer, Integer> pair;
+            Point point;
             do {
-                pair = new Pair<>(random.nextInt(columnCount), random.nextInt(rowCount));
-            } while (points.contains(pair));
-            points.add(pair);
-            gridPane.add(button, pair.getKey(), pair.getValue());
+                point = new Point(random.nextInt(columnCount), random.nextInt(rowCount));
+            } while (points.contains(point));
+            points.add(point);
+            gridPane.add(button, point.x, point.y);
         });
         score -= 2;
     }
