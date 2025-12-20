@@ -25,13 +25,22 @@ public class TakeTestController {
     private final Random random = new Random();
 
     @FXML
+    private Button firstButton;
+
+    @FXML
+    private Button lengthButton;
+
+    @FXML
+    private Button scatterButton;
+
+    @FXML
     private Text text;
 
     @FXML
     private TextField textField;
 
     @FXML
-    private Button button;
+    private Button nextButton;
 
     @FXML
     private GridPane gridPane;
@@ -83,8 +92,8 @@ public class TakeTestController {
     }
 
     @FXML
-    private void first(ActionEvent event) {
-        ((Node) event.getSource()).setDisable(true);
+    private void first() {
+        firstButton.setDisable(true);
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().charAt(0)));
         alert.show();
@@ -92,8 +101,8 @@ public class TakeTestController {
     }
 
     @FXML
-    private void length(ActionEvent event) {
-        ((Node) event.getSource()).setDisable(true);
+    private void length() {
+        lengthButton.setDisable(true);
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().length()));
         alert.show();
@@ -102,10 +111,10 @@ public class TakeTestController {
 
     @FXML
     private void scatter(ActionEvent event) {
-        ((Node) event.getSource()).setDisable(true);
+        scatterButton.setDisable(true);
         textField.setEditable(false);
-        button.setVisible(false);
-        button.setManaged(false);
+        nextButton.setVisible(false);
+        nextButton.setManaged(false);
         gridPane.setDisable(false);
         var columnCount = gridPane.getColumnConstraints().size();
         var rowCount = gridPane.getRowConstraints().size();
@@ -119,10 +128,10 @@ public class TakeTestController {
                     textField.appendText(text);
                     gridPane.getChildren().remove(button);
                     if (english.length() == textField.getLength()) {
-                        this.button.setVisible(true);
-                        this.button.setManaged(true);
+                        nextButton.setVisible(true);
+                        nextButton.setManaged(true);
                         next(event);
-                        ((Node) event.getSource()).setDisable(false);
+                        scatterButton.setDisable(false);
                         textField.setEditable(false);
                     }
                 } else {
@@ -157,6 +166,8 @@ public class TakeTestController {
         if (index < items.size()) {
             text.setText(items.get(index).getRussian());
             textField.setText("");
+            firstButton.setDisable(false);
+            lengthButton.setDisable(false);
         } else {
             Alert alert;
             if (score == items.size() * 5) {

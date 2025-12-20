@@ -14,9 +14,9 @@
     <top>
         <ToolBar>
             <Button text="Back" onAction="#back"/>
-            <Button text="First" onAction="#first"/>
-            <Button text="Length" onAction="#length"/>
-            <Button text="Scatter" onAction="#scatter"/>
+            <Button fx:id="firstButton" text="First" onAction="#first"/>
+            <Button fx:id="lengthButton" text="Length" onAction="#length"/>
+            <Button fx:id="scatterButton" text="Scatter" onAction="#scatter"/>
         </ToolBar>
     </top>
     <center>
@@ -26,7 +26,7 @@
             <Region VBox.vgrow="ALWAYS"/>
             <TextField fx:id="textField" VBox.vgrow="ALWAYS" alignment="CENTER" onAction="#next"/>
             <Region VBox.vgrow="ALWAYS"/>
-            <Button fx:id="button" VBox.vgrow="ALWAYS" text="Next" onAction="#next"/>
+            <Button fx:id="nextButton" VBox.vgrow="ALWAYS" text="Next" onAction="#next"/>
             <GridPane fx:id="gridPane" VBox.vgrow="ALWAYS"/>
         </VBox>
     </center>
