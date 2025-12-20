@@ -17,7 +17,9 @@ import ru.dzyubaka.lexigo.controller.test.TakeTestController;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -104,18 +106,25 @@ public class MenuController {
     }
 
     private void showChoiceDialog(String extension, String text, Consumer<String> action) {
-        try (var list = Files.list(Path.of("."))) {
-            var paths = list
-                    .map(p -> p.getFileName().toString())
-                    .filter(n -> n.endsWith(extension))
-                    .map(n -> n.substring(0, n.length() - 4))
-                    .collect(Collectors.toList());
-            if (paths.isEmpty()) {
+        try (var paths = Files.list(Path.of("."))
+                .filter(p -> p.getFileName().toString().endsWith(extension))
+                .sorted(Comparator.comparing((Path path) -> {
+                    try {
+                        return Files.readAttributes(path, BasicFileAttributes.class).creationTime();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).reversed())) {
+            var names = paths.map(p -> {
+                var name = p.getFileName().toString();
+                return name.substring(0, name.lastIndexOf('.'));
+            }).toList();
+            if (names.isEmpty()) {
                 var alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("There are no %ss!".formatted(text));
                 alert.show();
             } else {
-                var dialog = new ChoiceDialog<>(null, paths);
+                var dialog = new ChoiceDialog<>(null, names);
                 dialog.setHeaderText("Select a " + text);
                 dialog.showAndWait().ifPresent(action);
             }
