@@ -19,10 +19,10 @@ import ru.dzyubaka.lexigo.Main;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.util.HashSet;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 public class TakeTestController {
-    private final Random random = new Random();
+    private final RandomGenerator random = RandomGenerator.getDefault();
 
     @FXML
     private Button firstButton;
