@@ -15,6 +15,7 @@ import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class EditTestController {
             }).collect(Collectors.toCollection(FXCollections::observableArrayList));
             tableView.setItems(items);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -114,7 +115,7 @@ public class EditTestController {
             dirty = false;
             back(event);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 

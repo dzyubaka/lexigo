@@ -11,6 +11,7 @@ import javafx.util.Duration;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -36,7 +37,7 @@ public class StartTalkController {
         try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
             label.setText(bufferedReader.readAllAsString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 

@@ -10,6 +10,7 @@ import javafx.scene.control.TextInputDialog;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -27,7 +28,7 @@ public class EditTalkController {
             textArea.setText(bufferedReader.readAllAsString());
             dirty = false;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -71,7 +72,7 @@ public class EditTalkController {
             dirty = false;
             back(event);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 }

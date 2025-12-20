@@ -15,6 +15,7 @@ import ru.dzyubaka.lexigo.controller.test.EditTestController;
 import ru.dzyubaka.lexigo.controller.test.TakeTestController;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -30,7 +31,7 @@ public class MenuController {
         try {
             FXML = FXMLLoader.load(MenuController.class.getResource("menu.fxml"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -48,7 +49,7 @@ public class MenuController {
                 loader.<EditTestController>getController().loadTest(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         });
     }
@@ -67,7 +68,7 @@ public class MenuController {
                 loader.<TakeTestController>getController().setItems(items);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         });
     }
@@ -86,7 +87,7 @@ public class MenuController {
                 loader.<EditTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         });
     }
@@ -100,7 +101,7 @@ public class MenuController {
                 loader.<StartTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         });
     }
@@ -112,7 +113,7 @@ public class MenuController {
                     try {
                         return Files.readAttributes(path, BasicFileAttributes.class).creationTime();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new UncheckedIOException(e);
                     }
                 }).reversed())) {
             var names = paths.map(p -> {
@@ -129,7 +130,7 @@ public class MenuController {
                 dialog.showAndWait().ifPresent(action);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 }
