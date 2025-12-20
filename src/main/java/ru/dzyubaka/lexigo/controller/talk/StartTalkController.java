@@ -35,8 +35,8 @@ public class StartTalkController {
 
     private int millis = PREPARE_MILLIS;
 
-    public void loadTalk(String name) {
-        try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+    public void loadTalk(Path path) {
+        try (var bufferedReader = Files.newBufferedReader(path)) {
             var lines = bufferedReader.readAllAsString().split("\n\n");
             var text = new Text(lines[1]);
             text.setStyle("-fx-font-size: 1.5em");

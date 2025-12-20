@@ -31,8 +31,8 @@ public class EditTestController {
 
     private Item removed;
 
-    public void loadTest(String name) {
-        path = Path.of(name + ".csv");
+    public void loadTest(Path path) {
+        this.path = path;
         try (var bufferedReader = Files.newBufferedReader(path)) {
             var items = bufferedReader.readAllLines().stream().map(line -> {
                 var commaIndex = line.indexOf(',');

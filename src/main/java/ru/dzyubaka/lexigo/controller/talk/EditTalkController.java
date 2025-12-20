@@ -22,8 +22,8 @@ public class EditTalkController {
 
     private Path path;
 
-    public void loadTalk(String name) {
-        path = Path.of(name + ".txt");
+    public void loadTalk(Path path) {
+        this.path = path;
         try (var bufferedReader = Files.newBufferedReader(path)) {
             textArea.setText(bufferedReader.readAllAsString());
             dirty = false;

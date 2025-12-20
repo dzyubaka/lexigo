@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
+import ru.dzyubaka.lexigo.PathChoice;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
 import ru.dzyubaka.lexigo.controller.talk.StartTalkController;
 import ru.dzyubaka.lexigo.controller.test.EditTestController;
@@ -42,11 +43,11 @@ public class MenuController {
 
     @FXML
     private void editTest(ActionEvent event) {
-        showChoiceDialog(".csv", "test", name -> {
+        showChoiceDialog(".csv", "test", path -> {
             try {
                 var loader = new FXMLLoader(MenuController.class.getResource("test/edit-test.fxml"));
                 var root = loader.<Parent>load();
-                loader.<EditTestController>getController().loadTest(name);
+                loader.<EditTestController>getController().loadTest(path);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
@@ -56,8 +57,8 @@ public class MenuController {
 
     @FXML
     private void takeTest(ActionEvent event) {
-        showChoiceDialog(".csv", "test", name -> {
-            try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
+        showChoiceDialog(".csv", "test", path -> {
+            try (var bufferedReader = Files.newBufferedReader(path)) {
                 var items = bufferedReader.readAllLines().stream().map(line -> {
                     var commaIndex = line.indexOf(',');
                     return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
@@ -106,9 +107,10 @@ public class MenuController {
         });
     }
 
-    private void showChoiceDialog(String extension, String text, Consumer<String> action) {
-        try (var paths = Files.list(Path.of("."))
-                .filter(p -> p.getFileName().toString().endsWith(extension))
+    private void showChoiceDialog(String extension, String text, Consumer<Path> action) {
+        var dir = Path.of(System.getProperty("user.home"), "Documents", "LexiGo");
+        try (var paths = Files.list(Files.createDirectories(dir))
+                .filter(p -> p.toString().endsWith(extension))
                 .sorted(Comparator.comparing((Path path) -> {
                     try {
                         return Files.readAttributes(path, BasicFileAttributes.class).creationTime();
@@ -116,18 +118,15 @@ public class MenuController {
                         throw new UncheckedIOException(e);
                     }
                 }).reversed())) {
-            var names = paths.map(p -> {
-                var name = p.getFileName().toString();
-                return name.substring(0, name.lastIndexOf('.'));
-            }).toList();
-            if (names.isEmpty()) {
+            var choices = paths.map(PathChoice::new).toList();
+            if (choices.isEmpty()) {
                 var alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("There are no %ss!".formatted(text));
                 alert.show();
             } else {
-                var dialog = new ChoiceDialog<>(null, names);
+                var dialog = new ChoiceDialog<>(null, choices);
                 dialog.setHeaderText("Select a " + text);
-                dialog.showAndWait().ifPresent(action);
+                dialog.showAndWait().ifPresent(choice -> action.accept(choice.path()));
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
