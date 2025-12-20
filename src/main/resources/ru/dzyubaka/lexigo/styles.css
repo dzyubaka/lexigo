@@ -1,7 +1,3 @@
-VBox {
-    -fx-font-size: 2em;
-}
-
 .menu {
     -fx-font-size: 2em;
     -fx-spacing: 32;
@@ -9,7 +5,7 @@ VBox {
     -fx-border-color: -fx-box-border;
 }
 
-Label, .table-view .column-header-background, .table-row-cell {
+.table-view .column-header-background, .table-row-cell {
     -fx-font-size: 1.5em;
 }
 

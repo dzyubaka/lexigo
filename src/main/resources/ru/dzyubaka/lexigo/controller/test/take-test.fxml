@@ -20,7 +20,7 @@
         </ToolBar>
     </top>
     <center>
-        <VBox alignment="CENTER">
+        <VBox style="-fx-font-size: 2em" alignment="CENTER">
             <Region VBox.vgrow="ALWAYS"/>
             <Text fx:id="text" VBox.vgrow="ALWAYS"/>
             <Region VBox.vgrow="ALWAYS"/>
