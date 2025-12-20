@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
@@ -27,7 +29,7 @@ public class StartTalkController {
     private ProgressBar progressBar;
 
     @FXML
-    private Label label;
+    private TextFlow textFlow;
 
     private Timeline timeline;
 
@@ -35,7 +37,16 @@ public class StartTalkController {
 
     public void loadTalk(String name) {
         try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
-            label.setText(bufferedReader.readAllAsString());
+            var lines = bufferedReader.readAllAsString().split(System.lineSeparator().repeat(2));
+            var text = new Text(lines[1]);
+            text.setStyle("-fx-font-size: 1.5em");
+            textFlow.getChildren().addAll(
+                    new Text(lines[0]),
+                    new Text("\n\n"),
+                    text,
+                    new Text("\n\n"),
+                    new Text(lines[2])
+            );
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
