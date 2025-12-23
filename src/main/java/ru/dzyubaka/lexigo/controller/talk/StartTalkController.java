@@ -39,7 +39,7 @@ public class StartTalkController {
         try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
             var lines = bufferedReader.readAllAsString().split("\n\n");
             var text = new Text(lines[1]);
-            text.setStyle("-fx-font-size: 1.5em");
+            text.setStyle("-fx-font-size: 1.25em");
             textFlow.getChildren().addAll(
                     new Text(lines[0]),
                     new Text("\n\n"),
