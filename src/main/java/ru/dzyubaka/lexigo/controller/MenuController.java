@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MenuController {
     public static final Parent FXML;
@@ -125,7 +126,8 @@ public class MenuController {
                 alert.setHeaderText("There are no %ss!".formatted(text));
                 alert.show();
             } else {
-                var dialog = new ChoiceDialog<>(null, names);
+                var dialog = new ChoiceDialog<String>();
+                dialog.getItems().addAll(names);
                 dialog.setHeaderText("Select a " + text);
                 dialog.showAndWait().ifPresent(action);
             }
