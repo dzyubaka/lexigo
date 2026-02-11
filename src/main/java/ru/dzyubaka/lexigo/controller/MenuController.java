@@ -6,8 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.*;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
 import ru.dzyubaka.lexigo.controller.talk.GiveTalkController;
@@ -95,14 +94,24 @@ public class MenuController {
     @FXML
     private void giveTalk(ActionEvent event) {
         showChoiceDialog(".txt", "talk", name -> {
-            try {
-                var loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
-                var root = loader.<Parent>load();
-                loader.<GiveTalkController>getController().loadTalk(name);
-                ((Node) event.getSource()).getScene().setRoot(root);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            var alert = new Alert(Alert.AlertType.CONFIRMATION, null,
+                    new ButtonType("OGE"),
+                    new ButtonType("EGE"),
+                    ButtonType.CANCEL
+            );
+            alert.setHeaderText("Select mode");
+            alert.showAndWait().ifPresent(type -> {
+                if (type.getButtonData() != ButtonBar.ButtonData.CANCEL_CLOSE) {
+                    try {
+                        var loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
+                        var root = loader.<Parent>load();
+                        loader.<GiveTalkController>getController().loadTalk(name, type.getText().charAt(0));
+                        ((Node) event.getSource()).getScene().setRoot(root);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }
+            });
         });
     }
 

@@ -6,7 +6,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ToolBar;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
@@ -18,10 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GiveTalkController {
-    private final static int PREPARE_MILLIS = 90_000;
-
-    private final static int TALK_MILLIS = 120_000;
-
     @FXML
     private ToolBar toolBar;
 
@@ -33,9 +32,51 @@ public class GiveTalkController {
 
     private Timeline timeline;
 
-    private int millis = PREPARE_MILLIS;
+    private int prepareMillis;
 
-    public void loadTalk(String name) {
+    private int talkMillis;
+
+    private int millisLeft;
+
+    @FXML
+    private void initialize() {
+        progressBar.prefWidthProperty().bind(toolBar.widthProperty().subtract(60));
+        var duration = new Duration(50);
+        timeline = new Timeline(new KeyFrame(duration, _ -> {
+            progressBar.setProgress((double) (millisLeft -= (int) (duration.toMillis())) / prepareMillis);
+            if (millisLeft <= 0) {
+                progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+                timeline.stop();
+                Platform.runLater(() -> {
+                    var alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Timeout!");
+                    alert.showAndWait();
+                    millisLeft = talkMillis;
+                    progressBar.setProgress(1);
+                    timeline.getKeyFrames().setAll(new KeyFrame(duration, _ -> {
+                        progressBar.setProgress((double) (millisLeft -= (int) (duration.toMillis())) / talkMillis);
+                        if (millisLeft <= 0) {
+                            timeline.stop();
+                            alert.show();
+                        }
+                    }));
+                    timeline.play();
+                });
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    public void loadTalk(String name, char key) {
+        if (key == 'O') {
+            prepareMillis = 90_000;
+            talkMillis = 120_000;
+        } else if (key == 'E') {
+            prepareMillis = talkMillis = 150_000;
+        } else {
+            throw new IllegalArgumentException("key = " + key);
+        }
         try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
             var lines = bufferedReader.readAllAsString().split("\n\n");
             var text = new Text(lines[1]);
@@ -47,6 +88,7 @@ public class GiveTalkController {
                     new Text("\n\n"),
                     new Text(lines[2])
             );
+            millisLeft = prepareMillis;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -58,35 +100,5 @@ public class GiveTalkController {
             timeline.stop();
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
-    }
-
-    @FXML
-    private void initialize() {
-        progressBar.prefWidthProperty().bind(toolBar.widthProperty().subtract(60));
-        var duration = new Duration(50);
-        timeline = new Timeline(new KeyFrame(duration, _ -> {
-            progressBar.setProgress((double) (millis -= (int) (duration.toMillis())) / PREPARE_MILLIS);
-            if (millis <= 0) {
-                progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
-                timeline.stop();
-                Platform.runLater(() -> {
-                    var alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Timeout!");
-                    alert.showAndWait();
-                    millis = TALK_MILLIS;
-                    progressBar.setProgress(1);
-                    timeline.getKeyFrames().setAll(new KeyFrame(duration, _ -> {
-                        progressBar.setProgress((double) (millis -= (int) (duration.toMillis())) / TALK_MILLIS);
-                        if (millis <= 0) {
-                            timeline.stop();
-                            alert.show();
-                        }
-                    }));
-                    timeline.play();
-                });
-            }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
     }
 }
