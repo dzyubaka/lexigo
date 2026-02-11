@@ -59,8 +59,8 @@ public class MenuController {
         showChoiceDialog(".csv", "test", name -> {
             try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".csv"))) {
                 var items = bufferedReader.readAllLines().stream().map(line -> {
-                    var commaIndex = line.indexOf(',');
-                    return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
+                    var index = line.lastIndexOf(',');
+                    return new Item(line.substring(0, index), line.substring(index + 1));
                 }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                 Collections.shuffle(items);
                 var loader = new FXMLLoader(MenuController.class.getResource("test/take-test.fxml"));

@@ -35,8 +35,8 @@ public class EditTestController {
         path = Path.of(name + ".csv");
         try (var bufferedReader = Files.newBufferedReader(path)) {
             var items = bufferedReader.readAllLines().stream().map(line -> {
-                var commaIndex = line.indexOf(',');
-                return new Item(line.substring(0, commaIndex), line.substring(commaIndex + 1));
+                var index = line.lastIndexOf(',');
+                return new Item(line.substring(0, index), line.substring(index + 1));
             }).collect(Collectors.toCollection(FXCollections::observableArrayList));
             tableView.setItems(items);
         } catch (IOException e) {
