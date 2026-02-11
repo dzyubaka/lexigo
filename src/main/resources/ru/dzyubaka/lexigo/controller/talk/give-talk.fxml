@@ -9,7 +9,7 @@
 <?import javafx.scene.text.TextFlow?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.dzyubaka.lexigo.controller.talk.StartTalkController">
+            fx:controller="ru.dzyubaka.lexigo.controller.talk.GiveTalkController">
     <top>
         <ToolBar fx:id="toolBar">
             <Button text="Back" onAction="#back"/>

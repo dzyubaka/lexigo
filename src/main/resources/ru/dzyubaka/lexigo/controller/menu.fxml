@@ -23,7 +23,7 @@
         <HBox styleClass="menu" alignment="CENTER">
             <Button text="Create" onAction="#createTalk"/>
             <Button text="Edit" onAction="#editTalk"/>
-            <Button text="Start" onAction="#startTalk"/>
+            <Button text="Give" onAction="#giveTalk"/>
         </HBox>
     </Group>
 </VBox>

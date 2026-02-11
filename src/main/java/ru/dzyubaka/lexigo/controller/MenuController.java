@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
-import ru.dzyubaka.lexigo.controller.talk.StartTalkController;
+import ru.dzyubaka.lexigo.controller.talk.GiveTalkController;
 import ru.dzyubaka.lexigo.controller.test.EditTestController;
 import ru.dzyubaka.lexigo.controller.test.TakeTestController;
 
@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MenuController {
     public static final Parent FXML;
@@ -94,12 +93,12 @@ public class MenuController {
     }
 
     @FXML
-    private void startTalk(ActionEvent event) {
+    private void giveTalk(ActionEvent event) {
         showChoiceDialog(".txt", "talk", name -> {
             try {
-                var loader = new FXMLLoader(MenuController.class.getResource("talk/start-talk.fxml"));
+                var loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
                 var root = loader.<Parent>load();
-                loader.<StartTalkController>getController().loadTalk(name);
+                loader.<GiveTalkController>getController().loadTalk(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);

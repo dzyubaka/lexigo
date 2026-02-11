@@ -17,7 +17,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class StartTalkController {
+public class GiveTalkController {
     private final static int PREPARE_MILLIS = 90_000;
 
     private final static int TALK_MILLIS = 120_000;
