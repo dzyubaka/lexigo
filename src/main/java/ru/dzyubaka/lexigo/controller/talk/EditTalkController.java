@@ -32,8 +32,7 @@ public class EditTalkController {
         public void paste() {
             var image = Clipboard.getSystemClipboard().getImage();
             if (image != null) {
-                bufferedImage = removeAlpha(image);
-                setImage();
+                setImage(removeAlpha(image));
             } else {
                 super.paste();
             }
@@ -54,8 +53,10 @@ public class EditTalkController {
         path = Path.of(name + ".txt");
         try (var bufferedReader = Files.newBufferedReader(path)) {
             textArea.setText(bufferedReader.readAllAsString());
-            bufferedImage = ImageIO.read(new File(name + ".jpg"));
-            setImage();
+            var input = new File(name + ".jpg");
+            if (input.exists()) {
+                setImage(ImageIO.read(input));
+            }
             dirty = false;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -120,7 +121,8 @@ public class EditTalkController {
         }
     }
 
-    private void setImage() {
+    private void setImage(BufferedImage bufferedImage) {
+        this.bufferedImage = bufferedImage;
         imageView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
         imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
     }

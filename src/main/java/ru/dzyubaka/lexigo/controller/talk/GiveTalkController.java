@@ -100,8 +100,11 @@ public class GiveTalkController {
                     new Text("\n\n"),
                     new Text(lines[2])
             );
-            imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File(name + ".jpg")), null));
-            imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
+             var input = new File(name + ".jpg");
+            if (input.exists()) {
+                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(input), null));
+                imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
+            }
             millisLeft = prepareMillis;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
