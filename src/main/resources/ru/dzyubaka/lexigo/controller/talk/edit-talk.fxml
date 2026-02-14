@@ -12,6 +12,7 @@
         <ToolBar GridPane.hgrow="always" GridPane.rowIndex="0">
             <Button text="Back" onAction="#back"/>
             <Button text="Save" onAction="#save"/>
+            <Button id="saveAs" text="Save As" onAction="#save"/>
         </ToolBar>
     </top>
     <bottom>
