@@ -99,6 +99,11 @@ public class EditTalkController {
         }
         try (var bufferedWriter = Files.newBufferedWriter(path)) {
             bufferedWriter.write(textArea.getText());
+            if (bufferedImage != null) {
+                var fileName = path.getFileName().toString();
+                var output = new File(fileName.substring(0, fileName.lastIndexOf('.')) + ".jpg");
+                ImageIO.write(bufferedImage, "JPEG", output);
+            }
             dirty = false;
             back(event);
         } catch (IOException e) {
