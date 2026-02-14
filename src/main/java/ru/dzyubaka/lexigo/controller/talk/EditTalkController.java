@@ -74,6 +74,7 @@ public class EditTalkController {
     @FXML
     private void initialize() {
         textArea.textProperty().addListener(_ -> dirty = true);
+        textArea.setWrapText(true);
         borderPane.setCenter(textArea);
     }
 
