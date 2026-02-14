@@ -1,5 +1,6 @@
 package ru.dzyubaka.lexigo.controller.talk;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -7,8 +8,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.layout.*;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -16,11 +25,31 @@ import java.nio.file.Path;
 
 public class EditTalkController {
     @FXML
-    private TextArea textArea;
+    private BorderPane borderPane;
+
+    private final TextArea textArea = new TextArea() {
+        @Override
+        public void paste() {
+            var image = Clipboard.getSystemClipboard().getImage();
+            if (image != null) {
+                bufferedImage = removeAlpha(image);
+                imageView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+                imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
+            } else {
+                super.paste();
+            }
+            dirty = true;
+        }
+    };
+
+    @FXML
+    private ImageView imageView;
 
     private boolean dirty = false;
 
     private Path path;
+
+    private BufferedImage bufferedImage;
 
     public void loadTalk(String name) {
         path = Path.of(name + ".txt");
@@ -35,6 +64,7 @@ public class EditTalkController {
     @FXML
     private void initialize() {
         textArea.textProperty().addListener(_ -> dirty = true);
+        borderPane.setCenter(textArea);
     }
 
     @FXML
@@ -74,5 +104,13 @@ public class EditTalkController {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private static BufferedImage removeAlpha(Image image) {
+        var bufferedImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        var graphics = bufferedImage.createGraphics();
+        graphics.setComposite(AlphaComposite.Src);
+        graphics.drawImage(SwingFXUtils.fromFXImage(image, null), 0, 0, null);
+        return bufferedImage;
     }
 }
