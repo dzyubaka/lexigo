@@ -100,7 +100,7 @@ public class EditTestController {
             path = Path.of(name.orElseThrow() + ".csv");
             if (Files.exists(path)) {
                 var alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Test '" + name.orElseThrow() + "' already exists! Overwrite?");
+                alert.setHeaderText("Test \"" + name.orElseThrow() + "\" already exists! Overwrite?");
                 if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
                     return;

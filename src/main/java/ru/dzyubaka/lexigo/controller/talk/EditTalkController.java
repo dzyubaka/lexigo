@@ -33,8 +33,7 @@ public class EditTalkController {
             var image = Clipboard.getSystemClipboard().getImage();
             if (image != null) {
                 bufferedImage = removeAlpha(image);
-                imageView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
-                imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
+                setImage();
             } else {
                 super.paste();
             }
@@ -45,7 +44,7 @@ public class EditTalkController {
     @FXML
     private ImageView imageView;
 
-    private boolean dirty = false;
+    private boolean dirty;
 
     private Path path;
 
@@ -55,10 +54,20 @@ public class EditTalkController {
         path = Path.of(name + ".txt");
         try (var bufferedReader = Files.newBufferedReader(path)) {
             textArea.setText(bufferedReader.readAllAsString());
+            bufferedImage = ImageIO.read(new File(name + ".jpg"));
+            setImage();
             dirty = false;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private static BufferedImage removeAlpha(Image image) {
+        var bufferedImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        var graphics = bufferedImage.createGraphics();
+        graphics.setComposite(AlphaComposite.Src);
+        graphics.drawImage(SwingFXUtils.fromFXImage(image, null), 0, 0, null);
+        return bufferedImage;
     }
 
     @FXML
@@ -90,7 +99,7 @@ public class EditTalkController {
             path = Path.of(name.orElseThrow() + ".txt");
             if (Files.exists(path)) {
                 var alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Talk '" + name.orElseThrow() + "' already exists! Overwrite?");
+                alert.setHeaderText("Talk \"" + name.orElseThrow() + "\" already exists! Overwrite?");
                 if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
                     return;
@@ -111,11 +120,8 @@ public class EditTalkController {
         }
     }
 
-    private static BufferedImage removeAlpha(Image image) {
-        var bufferedImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        var graphics = bufferedImage.createGraphics();
-        graphics.setComposite(AlphaComposite.Src);
-        graphics.drawImage(SwingFXUtils.fromFXImage(image, null), 0, 0, null);
-        return bufferedImage;
+    private void setImage() {
+        imageView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+        imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
     }
 }
