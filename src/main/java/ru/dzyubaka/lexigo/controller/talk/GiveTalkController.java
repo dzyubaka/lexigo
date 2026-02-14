@@ -22,11 +22,11 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GiveTalkController {
+
     @FXML
     private BorderPane borderPane;
 

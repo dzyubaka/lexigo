@@ -17,11 +17,12 @@ import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.Main;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.random.RandomGenerator;
 
 public class TakeTestController {
+
     private final RandomGenerator random = RandomGenerator.getDefault();
 
     @FXML

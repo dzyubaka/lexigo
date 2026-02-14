@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Item {
+
     private StringProperty russian;
     private StringProperty english;
 

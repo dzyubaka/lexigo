@@ -11,7 +11,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import javax.imageio.ImageIO;
@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class EditTalkController {
+
     @FXML
     private BorderPane borderPane;
 

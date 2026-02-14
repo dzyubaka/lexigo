@@ -6,7 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
 import ru.dzyubaka.lexigo.controller.talk.GiveTalkController;
@@ -24,6 +27,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class MenuController {
+
     public static final Parent FXML;
 
     static {
