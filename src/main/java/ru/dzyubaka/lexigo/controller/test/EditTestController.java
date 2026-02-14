@@ -2,6 +2,7 @@ package ru.dzyubaka.lexigo.controller.test;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,10 +15,14 @@ import javafx.util.converter.DefaultStringConverter;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,9 +39,9 @@ public class EditTestController {
 
     public void loadTest(String name) {
         path = Path.of(name + ".csv");
-        try (var bufferedReader = Files.newBufferedReader(path)) {
-            var items = bufferedReader.readAllLines().stream().map(line -> {
-                var index = line.lastIndexOf(',');
+        try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
+            ObservableList<Item> items = bufferedReader.readAllLines().stream().map(line -> {
+                int index = line.lastIndexOf(',');
                 return new Item(line.substring(0, index), line.substring(index + 1));
             }).collect(Collectors.toCollection(FXCollections::observableArrayList));
             tableView.setItems(items);
@@ -47,7 +52,7 @@ public class EditTestController {
 
     @FXML
     private void initialize() {
-        var russianColumn = new TableColumn<Item, String>("Russian");
+        TableColumn<Item, String> russianColumn = new TableColumn<Item, String>("Russian");
         russianColumn.setSortable(false);
         russianColumn.setReorderable(false);
         russianColumn.setCellValueFactory(data -> data.getValue().russianProperty());
@@ -57,7 +62,7 @@ public class EditTestController {
             dirty = true;
         });
 
-        var englishColumn = new TableColumn<Item, String>("English");
+        TableColumn<Item, String> englishColumn = new TableColumn<Item, String>("English");
         englishColumn.setSortable(false);
         englishColumn.setReorderable(false);
         englishColumn.setCellValueFactory(data -> data.getValue().englishProperty());
@@ -86,21 +91,21 @@ public class EditTestController {
 
     @FXML
     private void save(ActionEvent event) {
-        var items = tableView.getItems().stream().filter(Item::isNotBlank).toList();
+        List<Item> items = tableView.getItems().stream().filter(Item::isNotBlank).toList();
         if (items.isEmpty()) {
-            var alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Test is blank!");
             alert.show();
             return;
         }
         if (path == null) {
-            var dialog = new TextInputDialog();
+            TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText("Enter test name");
-            var name = dialog.showAndWait();
+            Optional<String> name = dialog.showAndWait();
             if (name.isEmpty()) return;
             path = Path.of(name.orElseThrow() + ".csv");
             if (Files.exists(path)) {
-                var alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText("Test \"" + name.orElseThrow() + "\" already exists! Overwrite?");
                 if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
@@ -108,8 +113,8 @@ public class EditTestController {
                 }
             }
         }
-        try (var bufferedWriter = Files.newBufferedWriter(path)) {
-            for (var item : items) {
+        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
+            for (Item item : items) {
                 bufferedWriter.append(item.getRussian()).append(',')
                         .append(item.getEnglish()).append('\n');
             }
@@ -122,7 +127,7 @@ public class EditTestController {
 
     @FXML
     private void remove() {
-        var model = tableView.getSelectionModel();
+        TableView.TableViewSelectionModel<Item> model = tableView.getSelectionModel();
         removed = model.getSelectedItem();
         tableView.getItems().remove(model.getSelectedIndex());
         dirty = true;
@@ -138,10 +143,10 @@ public class EditTestController {
 
     private Callback<TableColumn<Item, String>, TableCell<Item, String>> createCellFactory() {
         return column -> {
-            var cell = new TextFieldTableCell<Item, String>(new DefaultStringConverter());
+            TextFieldTableCell<Item, String> cell = new TextFieldTableCell<Item, String>(new DefaultStringConverter());
             cell.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 if (event.getCode() == KeyCode.ENTER) {
-                    var nextRow = cell.getIndex() + 1;
+                    int nextRow = cell.getIndex() + 1;
                     Platform.runLater(() -> {
                         tableView.getSelectionModel().select(nextRow, column);
                         tableView.edit(nextRow, column);

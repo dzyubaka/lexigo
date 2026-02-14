@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import javax.imageio.ImageIO;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -53,14 +54,14 @@ public class GiveTalkController {
     @FXML
     private void initialize() {
         progressBar.prefWidthProperty().bind(toolBar.widthProperty().subtract(60));
-        var duration = new Duration(50);
+        Duration duration = new Duration(50);
         timeline = new Timeline(new KeyFrame(duration, _ -> {
             progressBar.setProgress((double) (millisLeft -= (int) (duration.toMillis())) / prepareMillis);
             if (millisLeft <= 0) {
                 progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
                 timeline.stop();
                 Platform.runLater(() -> {
-                    var alert = new Alert(Alert.AlertType.WARNING);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setHeaderText("Timeout!");
                     alert.showAndWait();
                     millisLeft = talkMillis;
@@ -89,9 +90,9 @@ public class GiveTalkController {
         } else {
             throw new IllegalArgumentException("key = " + key);
         }
-        try (var bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
-            var lines = bufferedReader.readAllAsString().split("\n\n");
-            var text = new Text(lines[1]);
+        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
+            String[] lines = bufferedReader.readAllAsString().split("\n\n");
+            Text text = new Text(lines[1]);
             text.setStyle("-fx-font-size: 1.25em");
             textFlow.getChildren().addAll(
                     new Text(lines[0]),
@@ -100,7 +101,7 @@ public class GiveTalkController {
                     new Text("\n\n"),
                     new Text(lines[2])
             );
-             var input = new File(name + ".jpg");
+            File input = new File(name + ".jpg");
             if (input.exists()) {
                 imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(input), null));
                 imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));

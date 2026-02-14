@@ -17,11 +17,10 @@ import ru.dzyubaka.lexigo.controller.MenuController;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class EditTalkController {
 
@@ -31,7 +30,7 @@ public class EditTalkController {
     private final TextArea textArea = new TextArea() {
         @Override
         public void paste() {
-            var image = Clipboard.getSystemClipboard().getImage();
+            Image image = Clipboard.getSystemClipboard().getImage();
             if (image != null) {
                 setImage(removeAlpha(image));
             } else {
@@ -52,9 +51,9 @@ public class EditTalkController {
 
     public void loadTalk(String name) {
         path = Path.of(name + ".txt");
-        try (var bufferedReader = Files.newBufferedReader(path)) {
+        try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
             textArea.setText(bufferedReader.readAllAsString());
-            var input = new File(name + ".jpg");
+            File input = new File(name + ".jpg");
             if (input.exists()) {
                 setImage(ImageIO.read(input));
             }
@@ -65,8 +64,8 @@ public class EditTalkController {
     }
 
     private static BufferedImage removeAlpha(Image image) {
-        var bufferedImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        var graphics = bufferedImage.createGraphics();
+        BufferedImage bufferedImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = bufferedImage.createGraphics();
         graphics.setComposite(AlphaComposite.Src);
         graphics.drawImage(SwingFXUtils.fromFXImage(image, null), 0, 0, null);
         return bufferedImage;
@@ -89,19 +88,19 @@ public class EditTalkController {
     @FXML
     private void save(ActionEvent event) {
         if (textArea.getText().isBlank()) {
-            var alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Talk is blank!");
             alert.show();
             return;
         }
         if (path == null || ((Node) event.getSource()).getId().equals("saveAs")) {
-            var dialog = new TextInputDialog();
+            TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText("Enter talk name");
-            var name = dialog.showAndWait();
+            Optional<String> name = dialog.showAndWait();
             if (name.isEmpty()) return;
             path = Path.of(name.orElseThrow() + ".txt");
             if (Files.exists(path)) {
-                var alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText("Talk \"" + name.orElseThrow() + "\" already exists! Overwrite?");
                 if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
@@ -109,11 +108,11 @@ public class EditTalkController {
                 }
             }
         }
-        try (var bufferedWriter = Files.newBufferedWriter(path)) {
+        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path)) {
             bufferedWriter.write(textArea.getText());
             if (bufferedImage != null) {
-                var fileName = path.getFileName().toString();
-                var output = new File(fileName.substring(0, fileName.lastIndexOf('.')) + ".jpg");
+                String fileName = path.getFileName().toString();
+                File output = new File(fileName.substring(0, fileName.lastIndexOf('.')) + ".jpg");
                 ImageIO.write(bufferedImage, "JPEG", output);
             }
             dirty = false;

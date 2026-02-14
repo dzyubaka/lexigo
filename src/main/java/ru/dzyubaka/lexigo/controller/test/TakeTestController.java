@@ -19,6 +19,7 @@ import ru.dzyubaka.lexigo.controller.MenuController;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.random.RandomGenerator;
 
 public class TakeTestController {
@@ -64,28 +65,27 @@ public class TakeTestController {
 
     @FXML
     private void initialize() {
-        var rowCount = 4;
-        var rowConstraints = gridPane.getRowConstraints();
-        var rowConstraint = new RowConstraints();
+        int rowCount = 4;
+        ObservableList<RowConstraints> rowConstraints = gridPane.getRowConstraints();
+        RowConstraints rowConstraint = new RowConstraints();
         rowConstraint.setPercentHeight(100. / rowCount);
 
         for (int i = 0; i < rowCount; i++) {
             rowConstraints.add(rowConstraint);
         }
 
-        var columnCount = 12;
-        var columnConstraints = gridPane.getColumnConstraints();
-        var columnConstraint = new ColumnConstraints();
+        int columnCount = 12;
+        ColumnConstraints columnConstraint = new ColumnConstraints();
         columnConstraint.setPercentWidth(100. / columnCount);
 
         for (int i = 0; i < columnCount; i++) {
-            columnConstraints.add(columnConstraint);
+            gridPane.getColumnConstraints().add(columnConstraint);
         }
     }
 
     @FXML
     private void back(ActionEvent event) {
-        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure?");
         if (alert.showAndWait().orElseThrow() == ButtonType.OK) {
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
@@ -95,7 +95,7 @@ public class TakeTestController {
     @FXML
     private void first() {
         firstButton.setDisable(true);
-        var alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().charAt(0)));
         alert.show();
         score--;
@@ -104,7 +104,7 @@ public class TakeTestController {
     @FXML
     private void length() {
         lengthButton.setDisable(true);
-        var alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().length()));
         alert.show();
         score--;
@@ -117,13 +117,13 @@ public class TakeTestController {
         nextButton.setVisible(false);
         nextButton.setManaged(false);
         gridPane.setDisable(false);
-        var columnCount = gridPane.getColumnConstraints().size();
-        var rowCount = gridPane.getRowConstraints().size();
-        var points = new HashSet<Point>();
-        var english = items.get(currentIndex).getEnglish();
+        int columnCount = gridPane.getColumnConstraints().size();
+        int rowCount = gridPane.getRowConstraints().size();
+        Set<Point> points = new HashSet<>();
+        String english = items.get(currentIndex).getEnglish();
         english.chars().forEach(c -> {
-            var text = String.valueOf((char) c);
-            var button = new Button(text);
+            String text = String.valueOf((char) c);
+            Button button = new Button(text);
             button.setOnAction(_ -> {
                 if (english.startsWith(textField.getText() + text)) {
                     textField.appendText(text);
@@ -136,7 +136,7 @@ public class TakeTestController {
                         textField.setEditable(false);
                     }
                 } else {
-                    var alert = new Alert(Alert.AlertType.WARNING);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setHeaderText("Wrong letter!");
                     alert.show();
                 }
@@ -159,11 +159,11 @@ public class TakeTestController {
             correctAlert.showAndWait();
             score += 5;
         } else {
-            var alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(items.get(currentIndex).getEnglish());
             alert.showAndWait();
         }
-        var index = ++currentIndex;
+        int index = ++currentIndex;
         if (index < items.size()) {
             text.setText(items.get(index).getRussian());
             textField.setText("");
