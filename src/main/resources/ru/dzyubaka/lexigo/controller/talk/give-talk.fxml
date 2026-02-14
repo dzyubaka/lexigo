@@ -3,12 +3,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="borderPane"
             fx:controller="ru.dzyubaka.lexigo.controller.talk.GiveTalkController">
     <top>
         <ToolBar fx:id="toolBar">
@@ -25,4 +27,9 @@
             </VBox>
         </HBox>
     </center>
+    <bottom>
+        <HBox alignment="CENTER">
+            <ImageView fx:id="imageView" preserveRatio="true"/>
+        </HBox>
+    </bottom>
 </BorderPane>
