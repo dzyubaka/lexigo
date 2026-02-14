@@ -14,7 +14,7 @@ public class Main extends Application {
         Scene scene = new Scene(FXMLLoader.load(Main.class.getResource("controller/menu.fxml")), 640, 400);
         scene.getStylesheets().add(Main.class.getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
-        primaryStage.setTitle("LexiGo! v1.0.2");
+        primaryStage.setTitle("LexiGo! v1.1.0");
         primaryStage.setMinWidth(scene.getWidth());
         primaryStage.setMinHeight(scene.getHeight());
         primaryStage.show();
