@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import ru.dzyubaka.lexigo.Alerts;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.talk.EditTalkController;
 import ru.dzyubaka.lexigo.controller.talk.GiveTalkController;
@@ -130,9 +131,7 @@ public class MenuController {
                 return name.substring(0, name.lastIndexOf('.'));
             }).toList();
             if (names.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("There are no %ss!".formatted(text));
-                alert.show();
+                Alerts.create(Alert.AlertType.INFORMATION, "There are no %ss!".formatted(text)).show();
             } else {
                 ChoiceDialog<String> dialog = new ChoiceDialog<>();
                 dialog.getItems().addAll(names);

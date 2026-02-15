@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
+import ru.dzyubaka.lexigo.Alerts;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
@@ -79,7 +80,7 @@ public class EditTestController {
 
     @FXML
     private void back(ActionEvent event) throws IOException {
-        if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
+        if (!dirty || Alerts.create(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
@@ -93,9 +94,7 @@ public class EditTestController {
     private void save(ActionEvent event) {
         List<Item> items = tableView.getItems().stream().filter(Item::isNotBlank).toList();
         if (items.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Test is blank!");
-            alert.show();
+            Alerts.create(Alert.AlertType.ERROR, "Test is blank!").show();
             return;
         }
         if (path == null) {
@@ -105,9 +104,7 @@ public class EditTestController {
             if (name.isEmpty()) return;
             path = Path.of(name.orElseThrow() + ".csv");
             if (Files.exists(path)) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Test \"" + name.orElseThrow() + "\" already exists! Overwrite?");
-                if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
+                if (Alerts.create(Alert.AlertType.CONFIRMATION, "Test \"" + name.orElseThrow() + "\" already exists! Overwrite?").showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
                     return;
                 }

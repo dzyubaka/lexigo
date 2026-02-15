@@ -13,6 +13,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
+import ru.dzyubaka.lexigo.Alerts;
 import ru.dzyubaka.lexigo.Item;
 import ru.dzyubaka.lexigo.Main;
 import ru.dzyubaka.lexigo.controller.MenuController;
@@ -47,14 +48,13 @@ public class TakeTestController {
     @FXML
     private GridPane gridPane;
 
-    private final Alert correctAlert = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert correctAlert = Alerts.create(Alert.AlertType.INFORMATION, "Correct!");
     private ObservableList<Item> items;
 
     private int currentIndex = 0;
     private int score = 0;
 
     {
-        correctAlert.setHeaderText("Correct!");
         correctAlert.getDialogPane().setGraphic(new ImageView(Main.class.getResource("accept.png").toExternalForm()));
     }
 
@@ -85,9 +85,7 @@ public class TakeTestController {
 
     @FXML
     private void back(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Are you sure?");
-        if (alert.showAndWait().orElseThrow() == ButtonType.OK) {
+        if (Alerts.create(Alert.AlertType.CONFIRMATION, "Are you sure?").showAndWait().orElseThrow() == ButtonType.OK) {
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
@@ -95,18 +93,14 @@ public class TakeTestController {
     @FXML
     private void first() {
         firstButton.setDisable(true);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().charAt(0)));
-        alert.show();
+        Alerts.create(Alert.AlertType.INFORMATION, String.valueOf(items.get(currentIndex).getEnglish().charAt(0))).show();
         score--;
     }
 
     @FXML
     private void length() {
         lengthButton.setDisable(true);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(String.valueOf(items.get(currentIndex).getEnglish().length()));
-        alert.show();
+        Alerts.create(Alert.AlertType.INFORMATION, String.valueOf(items.get(currentIndex).getEnglish().length())).show();
         score--;
     }
 
@@ -136,9 +130,7 @@ public class TakeTestController {
                         textField.setEditable(false);
                     }
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Wrong letter!");
-                    alert.show();
+                    Alerts.create(Alert.AlertType.WARNING, "Wrong letter!").show();
                 }
             });
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -159,9 +151,7 @@ public class TakeTestController {
             correctAlert.showAndWait();
             score += 5;
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(items.get(currentIndex).getEnglish());
-            alert.showAndWait();
+            Alerts.create(Alert.AlertType.ERROR, items.get(currentIndex).getEnglish()).showAndWait();
         }
         int index = ++currentIndex;
         if (index < items.size()) {

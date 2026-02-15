@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.BorderPane;
+import ru.dzyubaka.lexigo.Alerts;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import javax.imageio.ImageIO;
@@ -80,7 +81,7 @@ public class EditTalkController {
 
     @FXML
     private void back(ActionEvent event) {
-        if (!dirty || new Alert(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
+        if (!dirty || Alerts.create(Alert.AlertType.CONFIRMATION, "Discard unsaved changes?").showAndWait().orElseThrow() == ButtonType.OK) {
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
     }
@@ -88,9 +89,7 @@ public class EditTalkController {
     @FXML
     private void save(ActionEvent event) {
         if (textArea.getText().isBlank()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Talk is blank!");
-            alert.show();
+            Alerts.create(Alert.AlertType.ERROR, "Talk is blank!").show();
             return;
         }
         if (path == null || ((Node) event.getSource()).getId() != null) {
@@ -100,9 +99,7 @@ public class EditTalkController {
             if (name.isEmpty()) return;
             path = Path.of(name.orElseThrow() + ".txt");
             if (Files.exists(path)) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Talk \"" + name.orElseThrow() + "\" already exists! Overwrite?");
-                if (alert.showAndWait().orElseThrow() != ButtonType.OK) {
+                if (Alerts.create(Alert.AlertType.CONFIRMATION, "Talk \"" + name.orElseThrow() + "\" already exists! Overwrite?").showAndWait().orElseThrow() != ButtonType.OK) {
                     path = null;
                     return;
                 }

@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import ru.dzyubaka.lexigo.Alerts;
 import ru.dzyubaka.lexigo.controller.MenuController;
 
 import javax.imageio.ImageIO;
@@ -61,8 +62,7 @@ public class GiveTalkController {
                 progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
                 timeline.stop();
                 Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Timeout!");
+                    Alert alert = Alerts.create(Alert.AlertType.WARNING, "Timeout!");
                     alert.showAndWait();
                     millisLeft = talkMillis;
                     progressBar.setProgress(1);
@@ -112,7 +112,7 @@ public class GiveTalkController {
 
     @FXML
     private void back(ActionEvent event) {
-        if (new Alert(Alert.AlertType.CONFIRMATION, "Really exit?").showAndWait().orElseThrow() == ButtonType.OK) {
+        if (Alerts.create(Alert.AlertType.CONFIRMATION, "Really exit?").showAndWait().orElseThrow() == ButtonType.OK) {
             timeline.stop();
             ((Node) event.getSource()).getScene().setRoot(MenuController.FXML);
         }
