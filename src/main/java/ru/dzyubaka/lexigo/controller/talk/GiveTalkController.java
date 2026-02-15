@@ -83,7 +83,8 @@ public class GiveTalkController {
 
     public void loadTalk(String name, boolean ege) {
         if (ege) {
-            prepareMillis = talkMillis = 150_000;
+            prepareMillis = 150_000;
+            talkMillis = 180_000;
         } else {
             prepareMillis = 90_000;
             talkMillis = 120_000;
