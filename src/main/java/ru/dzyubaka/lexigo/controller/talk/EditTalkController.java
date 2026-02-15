@@ -122,6 +122,7 @@ public class EditTalkController {
     private void setImage(BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
         imageView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+        imageView.fitWidthProperty().bind(borderPane.widthProperty());
         imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
     }
 }

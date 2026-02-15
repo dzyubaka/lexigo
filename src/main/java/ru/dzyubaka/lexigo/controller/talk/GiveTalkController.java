@@ -103,6 +103,7 @@ public class GiveTalkController {
             File input = new File(name + ".jpg");
             if (input.exists()) {
                 imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(input), null));
+                imageView.fitWidthProperty().bind(borderPane.widthProperty());
                 imageView.fitHeightProperty().bind(borderPane.heightProperty().divide(2));
             }
             millisLeft = prepareMillis;
