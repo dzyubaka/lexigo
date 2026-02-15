@@ -52,7 +52,7 @@ public class MenuController {
         showChoiceDialog(".csv", "test", name -> {
             try {
                 FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("test/edit-test.fxml"));
-                Parent root = loader.<Parent>load();
+                Parent root = loader.load();
                 loader.<EditTestController>getController().loadTest(name);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
@@ -71,7 +71,7 @@ public class MenuController {
                 }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                 Collections.shuffle(items);
                 FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("test/take-test.fxml"));
-                Parent root = loader.<Parent>load();
+                Parent root = loader.load();
                 loader.<TakeTestController>getController().setItems(items);
                 ((Node) event.getSource()).getScene().setRoot(root);
             } catch (IOException e) {
@@ -91,7 +91,7 @@ public class MenuController {
         showChoiceDialog(".txt", "talk", name -> {
             try {
                 FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("talk/edit-talk.fxml"));
-                Parent root = loader.<Parent>load();
+                Parent root = loader.load();
                 loader.<EditTalkController>getController().loadTalk(name);
                 source.getScene().setRoot(root);
             } catch (IOException e) {
@@ -106,7 +106,7 @@ public class MenuController {
         showChoiceDialog(".txt", "talk", name -> {
             try {
                 FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
-                Parent root = loader.<Parent>load();
+                Parent root = loader.load();
                 loader.<GiveTalkController>getController().loadTalk(name, Files.exists(Path.of(name + ".jpg")));
                 source.getScene().setRoot(root);
             } catch (IOException e) {
@@ -134,7 +134,7 @@ public class MenuController {
                 alert.setHeaderText("There are no %ss!".formatted(text));
                 alert.show();
             } else {
-                ChoiceDialog<String> dialog = new ChoiceDialog<String>();
+                ChoiceDialog<String> dialog = new ChoiceDialog<>();
                 dialog.getItems().addAll(names);
                 dialog.setHeaderText("Select a " + text);
                 dialog.showAndWait().ifPresent(action);

@@ -52,7 +52,7 @@ public class EditTestController {
 
     @FXML
     private void initialize() {
-        TableColumn<Item, String> russianColumn = new TableColumn<Item, String>("Russian");
+        TableColumn<Item, String> russianColumn = new TableColumn<>("Russian");
         russianColumn.setSortable(false);
         russianColumn.setReorderable(false);
         russianColumn.setCellValueFactory(data -> data.getValue().russianProperty());
@@ -62,7 +62,7 @@ public class EditTestController {
             dirty = true;
         });
 
-        TableColumn<Item, String> englishColumn = new TableColumn<Item, String>("English");
+        TableColumn<Item, String> englishColumn = new TableColumn<>("English");
         englishColumn.setSortable(false);
         englishColumn.setReorderable(false);
         englishColumn.setCellValueFactory(data -> data.getValue().englishProperty());
@@ -143,7 +143,7 @@ public class EditTestController {
 
     private Callback<TableColumn<Item, String>, TableCell<Item, String>> createCellFactory() {
         return column -> {
-            TextFieldTableCell<Item, String> cell = new TextFieldTableCell<Item, String>(new DefaultStringConverter());
+            TextFieldTableCell<Item, String> cell = new TextFieldTableCell<>(new DefaultStringConverter());
             cell.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     int nextRow = cell.getIndex() + 1;
