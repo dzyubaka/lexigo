@@ -93,7 +93,7 @@ public class EditTalkController {
             alert.show();
             return;
         }
-        if (path == null || ((Node) event.getSource()).getId().equals("saveAs")) {
+        if (path == null || ((Node) event.getSource()).getId() != null) {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText("Enter talk name");
             Optional<String> name = dialog.showAndWait();
