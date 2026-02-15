@@ -19,11 +19,19 @@
         </HBox>
     </Group>
     <Group>
-        <Text text="Give a Talk"/>
+        <Text text="OGE"/>
         <HBox styleClass="menu" alignment="CENTER">
             <Button text="Create" onAction="#createTalk"/>
-            <Button text="Edit" onAction="#editTalk"/>
-            <Button text="Give" onAction="#giveTalk"/>
+            <Button id="editOGE" text="Edit" onAction="#editTalk"/>
+            <Button id="giveOGE" text="Give" onAction="#giveTalk"/>
+        </HBox>
+    </Group>
+    <Group>
+        <Text text="EGE"/>
+        <HBox styleClass="menu" alignment="CENTER">
+            <Button text="Create" onAction="#createTalk"/>
+            <Button id="editEGE" text="Edit" onAction="#editTalk"/>
+            <Button id="giveEGE" text="Give" onAction="#giveTalk"/>
         </HBox>
     </Group>
 </VBox>

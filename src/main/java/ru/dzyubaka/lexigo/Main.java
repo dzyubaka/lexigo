@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Scene scene = new Scene(FXMLLoader.load(Main.class.getResource("controller/menu.fxml")), 640, 400);
+        Scene scene = new Scene(FXMLLoader.load(Main.class.getResource("controller/menu.fxml")), 800, 600);
         scene.getStylesheets().add(Main.class.getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("LexiGo! v1.1.0");

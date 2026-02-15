@@ -58,7 +58,7 @@ public class MenuController {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
-        });
+        }, false);
     }
 
     @FXML
@@ -77,7 +77,7 @@ public class MenuController {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
-        });
+        }, false);
     }
 
     @FXML
@@ -87,45 +87,37 @@ public class MenuController {
 
     @FXML
     private void editTalk(ActionEvent event) {
+        Node source = (Node) event.getSource();
         showChoiceDialog(".txt", "talk", name -> {
             try {
                 FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("talk/edit-talk.fxml"));
                 Parent root = loader.<Parent>load();
                 loader.<EditTalkController>getController().loadTalk(name);
-                ((Node) event.getSource()).getScene().setRoot(root);
+                source.getScene().setRoot(root);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
-        });
+        }, source.getId().endsWith("EGE"));
     }
 
     @FXML
     private void giveTalk(ActionEvent event) {
+        Node source = (Node) event.getSource();
         showChoiceDialog(".txt", "talk", name -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null,
-                    new ButtonType("OGE"),
-                    new ButtonType("EGE"),
-                    ButtonType.CANCEL
-            );
-            alert.setHeaderText("Select mode");
-            alert.showAndWait().ifPresent(type -> {
-                if (type.getButtonData() != ButtonBar.ButtonData.CANCEL_CLOSE) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
-                        Parent root = loader.<Parent>load();
-                        loader.<GiveTalkController>getController().loadTalk(name, type.getText().charAt(0));
-                        ((Node) event.getSource()).getScene().setRoot(root);
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                }
-            });
-        });
+            try {
+                FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("talk/give-talk.fxml"));
+                Parent root = loader.<Parent>load();
+                loader.<GiveTalkController>getController().loadTalk(name, Files.exists(Path.of(name + ".jpg")));
+                source.getScene().setRoot(root);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }, source.getId().endsWith("EGE"));
     }
 
-    private void showChoiceDialog(String extension, String text, Consumer<String> action) {
+    private void showChoiceDialog(String extension, String text, Consumer<String> action, boolean ege) {
         try (Stream<Path> paths = Files.list(Path.of("."))
-                .filter(p -> p.getFileName().toString().endsWith(extension))
+                .filter(p -> p.getFileName().toString().endsWith(extension) && ege ^ Files.notExists(Path.of(p.getFileName().toString().replace("txt", "jpg"))))
                 .sorted(Comparator.comparing((Path path) -> {
                     try {
                         return Files.readAttributes(path, BasicFileAttributes.class).creationTime();

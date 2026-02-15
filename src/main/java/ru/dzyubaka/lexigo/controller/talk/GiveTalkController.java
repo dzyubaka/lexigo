@@ -81,14 +81,12 @@ public class GiveTalkController {
         timeline.play();
     }
 
-    public void loadTalk(String name, char key) {
-        if (key == 'O') {
-            prepareMillis = 90_000;
-            talkMillis = 120_000;
-        } else if (key == 'E') {
+    public void loadTalk(String name, boolean ege) {
+        if (ege) {
             prepareMillis = talkMillis = 150_000;
         } else {
-            throw new IllegalArgumentException("key = " + key);
+            prepareMillis = 90_000;
+            talkMillis = 120_000;
         }
         try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(name + ".txt"))) {
             String[] lines = bufferedReader.readAllAsString().split("\n\n");
